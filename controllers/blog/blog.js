@@ -1,13 +1,13 @@
-const Category = require('../models/category')
-const Tag = require('../models/tag')
-const Blog = require('../models/blog')
+const Category = require('../../models/blog/category')
+const Tag = require('../../models/blog/tag')
+const Blog = require('../../models/blog/blog')
 const formidable = require('formidable')
 const slugify = require('slugify')
 const stripHtml = require('string-strip-html')
 const _ = require('lodash')
-const { errorHandler } = require('../helpers/dbErrorHandler')
+const { errorHandler } = require('../../helpers/dbErrorHandler')
 const fs = require('fs')
-const { smartTrim } = require('../helpers/blog')
+const { smartTrim } = require('../../helpers/blog')
 
 exports.create = (req,res) => {
     let form = new formidable.IncomingForm()

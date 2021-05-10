@@ -1,4 +1,4 @@
-const User = require('../models/user')
+const User = require('../../models/auth/user')
 
 exports.read = (req,res) => {
     req.profile.hashed_password = undefined

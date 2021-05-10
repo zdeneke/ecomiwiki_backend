@@ -1,29 +1,15 @@
-const Tag = require('../models/tag')
+const Category = require('../../models/blog/category')
 const slugify = require('slugify')
-const Blog = require('../models/blog')
-const { errorHandler } = require('../helpers/dbErrorHandler')
+const Blog = require('../../models/blog/blog')
+const { errorHandler } = require('../../helpers/dbErrorHandler')
 
 exports.create = (req,res) => {
-
     const { name } = req.body
-
     let slug = slugify(name).toLowerCase()
 
-    let tag = new Tag({ name, slug })
+    let category = new Category({ name, slug })
 
-    tag.save((err, data) => {
-        if (err){
-            console.log(err)
-            return res.status(400).json({
-                error: errorHandler(err)
-            })
-        }
-        res.json(data)
-    })
-}
-
-exports.list = (req,res) => {
-    Tag.find().exec((err, data) => {
+    category.save((err,data) => {
         if (err){
             return res.status(400).json({
                 error: errorHandler(err)
@@ -36,14 +22,14 @@ exports.list = (req,res) => {
 exports.read = (req,res) => {
     const slug = req.params.slug.toLowerCase()
 
-    Tag.findOne({ slug })
-        .exec((err,tag) => {
+    Category.findOne({ slug })
+        .exec((err, category) => {
             if (err){
-                return res.status(400).json({
-                    error: 'Tag not found'
+                res.status(400).json({
+                    error: errorHandler(err)
                 })
             }
-            Blog.find({tags: tag})
+            Blog.find({categories: category})
                 .populate('categories', '_id name slug')
                 .populate('tags', '_id name slug')
                 .populate('author', '_id name')
@@ -55,25 +41,37 @@ exports.read = (req,res) => {
                         })
                     }
                     res.json({
-                        tag: tag,
+                        category,
                         blogs: data
                     })
                 })
         })
 }
 
-exports.remove = (req,res) => {
-    const slug = req.params.slug.toLowerCase();
-
-    Tag.findOneAndRemove({ slug })
+exports.list = (req,res) => {
+    Category.find({})
         .exec((err, data) => {
             if (err){
                 return res.status(400).json({
                     error: errorHandler(err)
                 })
             }
+            res.json(data)
+        })
+}
+
+exports.remove = (req,res) => {
+    const slug = req.params.slug.toLowerCase()
+
+    Category.findOneAndRemove({ slug })
+        .exec((err, data) => {
+            if (err){
+                res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
             res.json({
-                message: 'Tag deleted successfully'
+                message: 'Category removed successfully.'
             })
         })
 }

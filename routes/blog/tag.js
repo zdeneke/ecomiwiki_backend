@@ -2,12 +2,12 @@ const express = require('express')
 const router = express.Router()
 
 // Controllers
-const { requireSignin, adminMiddleware } = require('../controllers/auth')
-const { create, list, read, remove } = require('../controllers/tag')
+const { requireSignin, adminMiddleware } = require('../../controllers/auth/auth')
+const { create, list, read, remove } = require('../../controllers/blog/tag')
 
 // Validators
-const { runValidation } = require('../validators')
-const { createTagValidator } = require('../validators/tag')
+const { runValidation } = require('../../validators')
+const { createTagValidator } = require('../../validators/tag')
 
 router.post('/tag', createTagValidator, runValidation, requireSignin, adminMiddleware, create)
 router.get('/tags', list)

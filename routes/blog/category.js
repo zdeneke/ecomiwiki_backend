@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const { create, list, read, remove } = require('../controllers/category')
-const { requireSignin, adminMiddleware } = require('../controllers/auth')
+const { create, list, read, remove } = require('../../controllers/blog/category')
+const { requireSignin, adminMiddleware } = require('../../controllers/auth/auth')
 
 // Validators
-const { runValidation } = require('../validators')
-const { categoryCreateValidator } = require('../validators/category')
+const { runValidation } = require('../../validators')
+const { categoryCreateValidator } = require('../../validators/category')
 
 // Create
 router.post('/category', categoryCreateValidator, requireSignin, adminMiddleware, create)
