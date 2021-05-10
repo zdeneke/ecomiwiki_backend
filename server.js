@@ -4,8 +4,9 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
-const fetch = require("node-fetch")
 require('dotenv').config()
+
+const { scheduledOmiUpdater } = require('./services/index')
 
 // Routes
 const blogRoutes = require('./routes/blog/blog')
@@ -13,6 +14,9 @@ const authRoutes = require('./routes/auth/auth')
 const userRoutes = require('./routes/auth/user')
 const categoryRoutes = require('./routes/blog/category')
 const tagRoutes = require('./routes/blog/tag')
+const collectibleRoutes = require('./routes/collectibles/collectible')
+const brandRoutes = require('./routes/collectibles/brand')
+const metricRoutes = require('./routes/metrics/index')
 
 // App
 const app = express()
@@ -22,19 +26,8 @@ mongoose.connect(process.env.DATABASE, { useNewUrlParser: true, useCreateIndex: 
     .then(() => console.log('Connected to MongoDB'))
     .catch(() => console.log('Error connecting to MongoDB'))
 
-// CoinMarketCap Test
-// fetch('https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=omi', {
-//     method: 'GET',
-//     headers: {
-//         'X-CMC_PRO_API_KEY': 'c867dd02-79fe-449c-8e65-02040c1534fd',
-//         'Accepts': 'application/json'
-//     }
-// })
-//     .then(response => response.json())
-//     .then(data => {
-//         console.log('Ok CMC res is: ', data)
-//     })
-//     .catch(e => console.log('Failed to fetch:', e))
+// Services (schedulers)
+scheduledOmiUpdater()
 
 // Middlewares
 app.use(morgan('dev'))
@@ -52,6 +45,9 @@ app.use('/api', authRoutes)
 app.use('/api', userRoutes)
 app.use('/api', categoryRoutes)
 app.use('/api', tagRoutes)
+app.use('/api', collectibleRoutes)
+app.use('/api', brandRoutes)
+app.use('/api', metricRoutes)
 
 // Port
 const port = process.env.PORT || 8000
