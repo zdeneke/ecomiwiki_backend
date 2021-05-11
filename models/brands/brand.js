@@ -19,6 +19,12 @@ const brandSchema = new mongoose.Schema({
         ref: 'License',
         required: true
     }],
+    banner: {
+        type: String
+    },
+    description: {
+        type: String
+    }
 }, { timestamps: true })
 
 
