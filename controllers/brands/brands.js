@@ -1,13 +1,13 @@
-const Brand = require('../../models/collectibles/brand')
+const Brand = require('../../models/brands/brand')
 const slugify = require('slugify')
 const Collectible = require('../../models/collectibles/collectible')
 const { errorHandler } = require('../../helpers/dbErrorHandler')
 
 exports.create = (req,res) => {
-    const { name } = req.body
+    const { name, license } = req.body
     let slug = slugify(name).toLowerCase()
 
-    let brand = new Brand({ name, slug })
+    let brand = new Brand({ name, license, slug })
 
     brand.save((err,data) => {
         if (err){

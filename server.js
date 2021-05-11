@@ -15,7 +15,8 @@ const userRoutes = require('./routes/auth/user')
 const categoryRoutes = require('./routes/blog/category')
 const tagRoutes = require('./routes/blog/tag')
 const collectibleRoutes = require('./routes/collectibles/collectible')
-const brandRoutes = require('./routes/collectibles/brand')
+const licenseRoutes = require('./routes/license/license')
+const brandRoutes = require('./routes/brand/brand') 
 const metricRoutes = require('./routes/metrics/index')
 
 // App
@@ -44,6 +45,7 @@ app.use('/api', userRoutes)
 app.use('/api', categoryRoutes)
 app.use('/api', tagRoutes)
 app.use('/api', collectibleRoutes)
+app.use('/api', licenseRoutes)
 app.use('/api', brandRoutes)
 app.use('/api', metricRoutes)
 

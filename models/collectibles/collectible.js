@@ -36,9 +36,11 @@ const collectibleSchema = new mongoose.Schema({
     editionType: {
         type: String
     },
-    license: {
-        type: String
-    },
+    license: [{
+        type: ObjectId,
+        ref: 'License',
+        required: true
+    }],
     series: {
         type: Number
     },

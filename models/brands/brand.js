@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const { ObjectId } = mongoose.Schema
 
 const brandSchema = new mongoose.Schema({
 
@@ -13,6 +14,11 @@ const brandSchema = new mongoose.Schema({
         unique: true,
         index: true
     },
+    license: [{
+        type: ObjectId,
+        ref: 'License',
+        required: true
+    }],
 }, { timestamps: true })
 
 
