@@ -32,7 +32,7 @@ exports.read = (req,res) => {
             Collectible.find({brand: brand})
                 .populate('brand', '_id name slug')
                 .populate('author', '_id name')
-                .select('_id title slug brand author eiImage veveImage rarity editions license series createdAt updatedAt')
+                .select('_id title slug listPrice brand author eiImage veveImage rarity editions license series createdAt updatedAt')
                 .exec((err, data) => {
                     if (err){
                         res.status(400).json({

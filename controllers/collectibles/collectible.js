@@ -8,7 +8,6 @@ const fs = require('fs')
 const { smartTrim } = require('../../helpers/blog')
 
 exports.create = (req,res) => {
-    console.log('Ok new request')
     let form = new formidable.IncomingForm()
     form.keepExtensions = true
     form.parse(req, (err, fields, files) => {
@@ -32,8 +31,6 @@ exports.create = (req,res) => {
             eiImage,
             brand
         } = fields
-
-        console.log('Form fields are: ', fields)
 
         if (!title || !title.length){
             return res.status(400).json({
@@ -108,8 +105,9 @@ exports.read = (req,res) => {
 
     Collectible.findOne({ slug })
         .populate('brand', '_id name, slug')
+        .populate('license', '_id name, slug')
         .populate('author', '_id name username')
-        .select('_id title price collection body mtitle mdesc slug brand tags author veveImage eiImage  createdAt updatedAt')
+        .select('_id title brand veveImage eiImage dropDate listPrice rarity editions editionType license series price collection body mtitle mdesc createdAt updatedAt')
         .exec((err, data) => {
             if (err){
                 return res.status(400).json({
@@ -136,69 +134,60 @@ exports.remove = (req,res) => {
 
 }
 
-// exports.update = (req,res) => {
-//     const slug = req.params.slug.toLowerCase()
-//
-//     Collectible.findOne({slug})
-//         .exec((err, oldCollectible) => {
-//             if (err){
-//                 return res.status(400).json({
-//                     error: errorHandler(err)
-//                 })
-//             }
-//
-//             let form = new formidable.IncomingForm()
-//             form.keepExtensions = true
-//
-//             form.parse(req, (err, fields, files) => {
-//                 if (err){
-//                     return res.status(400).json({
-//                         error: 'Image could not upload'
-//                     })
-//                 }
-//
-//                 let slugBeforeMerge = oldCollectible.slug
-//                 oldCollectible = _.merge(oldCollectible, fields)
-//                 oldCollectible.slug = slugBeforeMerge
-//
-//                 const { body, description, excerpt, categories, tags } = fields
-//
-//                 if (body){
-//                     oldCollectible.desc = stripHtml(body.substr(0, 160))
-//                 }
-//
-//                 if (categories){
-//                     oldCollectible.categories = categories.split(',')
-//                 }
-//
-//                 if (tags){
-//                     oldCollectible.tags = tags.split(',')
-//                 }
-//
-//                 if (files.photo) {
-//                     if (files.photo.size > 10000000 ){
-//                         return res.status(400).json({
-//                             error: 'Image should be less than 1mb in size.'
-//                         })
-//                     }
-//                     oldCollectible.photo.data = fs.readFileSync(files.photo.path)
-//                     oldCollectible.photo.contentType = files.photo.type
-//                 }
-//
-//
-//                 oldCollectible.save((err, result) => {
-//                     if (err){
-//                         return res.status(400).json({
-//                             error: errorHandler(err)
-//                         })
-//                     }
-//                     res.json(result)
-//                 })
-//             })
-//
-//         })
-//
-// }
+exports.update = (req,res) => {
+    const slug = req.params.slug.toLowerCase()
+
+    Collectible.findOne({slug})
+        .exec((err, oldCollectible) => {
+            if (err){
+                return res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+
+            let form = new formidable.IncomingForm()
+            form.keepExtensions = true
+
+            form.parse(req, (err, fields, files) => {
+                if (err){
+                    return res.status(400).json({
+                        error: 'Image could not upload'
+                    })
+                }
+
+                let slugBeforeMerge = oldCollectible.slug
+                oldCollectible = _.merge(oldCollectible, fields)
+                oldCollectible.slug = slugBeforeMerge
+
+                const { title, listPrice, body, dropDate, rarity, editions, editionType, license, series, description, veveImage, eiImage, brand } = fields
+
+                if (body){
+                    oldCollectible.desc = stripHtml(body.substr(0, 160))
+                }
+
+                // if (files.photo) {
+                //     if (files.photo.size > 10000000 ){
+                //         return res.status(400).json({
+                //             error: 'Image should be less than 1mb in size.'
+                //         })
+                //     }
+                //     oldCollectible.photo.data = fs.readFileSync(files.photo.path)
+                //     oldCollectible.photo.contentType = files.photo.type
+                // }
+
+                oldCollectible.save((err, result) => {
+                    if (err){
+                        return res.status(400).json({
+                            error: errorHandler(err)
+                        })
+                    }
+                    res.json(result)
+                })
+            })
+
+        })
+
+}
 
 // exports.photo = (req,res) => {
 //     const slug = req.params.slug.toLowerCase()
