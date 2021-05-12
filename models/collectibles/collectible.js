@@ -42,7 +42,7 @@ const collectibleSchema = new mongoose.Schema({
         required: true
     }],
     series: {
-        type: Number
+        type: String
     },
     slug: {
         type: String,

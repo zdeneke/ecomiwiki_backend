@@ -29,10 +29,9 @@ exports.read = (req,res) => {
                     error: errorHandler(err)
                 })
             }
-            Brands.find({license: license})
+            Collectible.find({license: license})
                 .populate('license', '_id name slug')
-                .select('_id name slug license createdAt updatedAt')
-                .exec((err, collectibles) => {
+                .exec((err, data) => {
                     if (err){
                         res.status(400).json({
                             error: errorHandler(err)
@@ -40,7 +39,7 @@ exports.read = (req,res) => {
                     }
                     res.json({
                         license,
-                        collectibles: collectibles
+                        collectibles: data
                     })
                 })
         })
