@@ -17,13 +17,16 @@ exports.read = (req,res) => {
 }
 
 exports.list = (req,res) => {
+
+    const offset = req.body.offset
+
     fetch(`${process.env.ALICE}ecomi/marketplace`,{
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
         },
         body:JSON.stringify({
-            offset: props
+            offset
         })
     })
         .then(response => {
