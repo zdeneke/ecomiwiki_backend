@@ -7,7 +7,7 @@ const { requireSignin, adminMiddleware } = require('../../controllers/auth/auth'
 //router.post('/ecomi/marketplace', list)
 
 // Read User
-router.post('/ecomi/users/:slug', read)
+router.get('/ecomi/users/:slug', read)
 
 module.exports = router
 
