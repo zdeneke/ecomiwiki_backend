@@ -4,7 +4,9 @@ require('dotenv').config()
 
 exports.read = (req,res) => {
     const slug = req.params.slug
-    fetch(`${process.env.ALICE}ecomi/marketplace/listing/${slug}`)
+    fetch(`${process.env.ALICE}ecomi/marketplace/listing/${slug}`, {
+        method: "POST"
+    })
         .then(response => {
             if (response.status >= 400) {
                 throw new Error("Bad response from server");
@@ -12,22 +14,19 @@ exports.read = (req,res) => {
             return response.json();
         })
         .then(data => {
-            res.json(data.data.user)
+            res.json(data.data.marketListing)
         })
 }
 
 exports.list = (req,res) => {
 
-    const offset = req.body.offset
+    //const offset = req.body.offset
 
     fetch(`${process.env.ALICE}ecomi/marketplace`,{
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
         },
-        body:JSON.stringify({
-            offset
-        })
     })
         .then(response => {
             if (response.status >= 400) {
@@ -39,7 +38,3 @@ exports.list = (req,res) => {
             res.json(data.data.marketListingList)
         })
 }
-
-
-
-
