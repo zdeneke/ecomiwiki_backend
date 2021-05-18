@@ -38,3 +38,21 @@ exports.list = (req,res) => {
             res.json(data.data.marketListingList)
         })
 }
+
+exports.getEndingSoonest = (req,res) => {
+    fetch(`${process.env.ALICE}ecomi/marketplace/ending-soonest`,{
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+        .then(response => {
+            if (response.status >= 400) {
+                throw new Error("Bad response from server");
+            }
+            return response.json();
+        })
+        .then(data => {
+            res.json(data.data.marketListingList)
+        })
+}

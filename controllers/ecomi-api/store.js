@@ -3,16 +3,18 @@ require('isomorphic-fetch');
 require('dotenv').config()
 
 exports.listNewArrivals = (req,res) => {
+    console.log('Req Body is: ', req.body.props)
 
-    console.log('Getting new arrivals..')
+    const offset = req.body.props
+    console.log('Offset is: ', offset)
 
-    //const offset = req.body.offset
-
-    fetch(`${process.env.ALICE}ecomi/store/new-arrivals`,{
+    fetch(`${process.env.ALICE}ecomi/store/new-arrivals?offset=${offset}`,{
         method: "POST",
         headers: {
-            'Content-Type': 'application/json'
+            Accept: 'application/json',
+            "Content-Type": "application/json"
         },
+        body: offset
     })
         .then(response => {
             if (response.status >= 400) {
@@ -21,7 +23,6 @@ exports.listNewArrivals = (req,res) => {
             return response.json();
         })
         .then(data => {
-            console.log('New arrivals res: ', data)
             res.json(data.data.newArrivals)
         })
 }
