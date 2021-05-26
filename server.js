@@ -6,7 +6,7 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 require('dotenv').config()
 
-const { scheduledOmiUpdater } = require('./services/index')
+const { scheduledOmiUpdater, scheduledBurnUpdater } = require('./services/index')
 
 // Routes
 const blogRoutes = require('./routes/blog/blog')
@@ -34,6 +34,7 @@ mongoose.connect(process.env.DATABASE, { useNewUrlParser: true, useCreateIndex: 
 
 // Services (schedulers)
 scheduledOmiUpdater()
+scheduledBurnUpdater()
 
 // Middlewares
 app.use(morgan('dev'))

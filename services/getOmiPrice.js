@@ -35,7 +35,7 @@ exports.getOmiPrice = () => {
                     if (err){
                         console.log('Error updating OMI metrics.')
                     } else {
-                        console.log('OMI metrics successfully updated.')
+                        console.log('OMI price metrics successfully updated.')
                     }
                 }
             );
