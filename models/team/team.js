@@ -21,7 +21,7 @@ const teamSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    jobTitle: {
+    title: {
         type: String
     },
     location: {

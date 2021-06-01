@@ -10,6 +10,7 @@ const { scheduledOmiUpdater, scheduledBurnUpdater } = require('./services/index'
 
 // Routes
 const blogRoutes = require('./routes/blog/blog')
+const teamRoutes = require('./routes/team/team')
 const authRoutes = require('./routes/auth/auth')
 const userRoutes = require('./routes/auth/user')
 const categoryRoutes = require('./routes/blog/category')
@@ -46,6 +47,7 @@ app.use(cors())
 
 // Routes Middleware
 app.use('/api', blogRoutes)
+app.use('/api', teamRoutes)
 app.use('/api', authRoutes)
 app.use('/api', userRoutes)
 app.use('/api', categoryRoutes)
