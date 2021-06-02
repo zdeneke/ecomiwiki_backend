@@ -13,7 +13,7 @@ const teamSchema = new mongoose.Schema({
         unique: true,
         index: true
     },
-    formerMember: {
+    active: {
       type: Boolean,
       default: false
     },

@@ -64,7 +64,7 @@ exports.create = (req,res) => {
 exports.list = (req,res) => {
     Team.find({})
         .populate('author', '_id name username')
-        .select('_id name title slug author createdAt updatedAt')
+        .select('_id name title photo slug author createdAt updatedAt')
         .exec((err, data) => {
             if (err){
                 return res.status(400).json({
@@ -140,7 +140,7 @@ exports.update = (req, res) => {
                         })
                     }
                     oldTeam.photo.data = fs.readFileSync(files.photo.path)
-                    oldBlog.photo.contentType = files.photo.type
+                    oldTeam.photo.contentType = files.photo.type
                 }
 
                 oldTeam.save((err, result) => {
