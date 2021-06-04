@@ -31,6 +31,14 @@ const Brand = new mongoose.Schema({
     landscapeImage: {
         type: String
     },
+    revenue:{
+        realised: {
+            type: Number
+        },
+        potential: {
+            type: Number
+        }
+    }
 }, { timestamps: true })
 
 module.exports = mongoose.model('Brand', Brand)

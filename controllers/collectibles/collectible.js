@@ -94,7 +94,7 @@ exports.list = (req,res) => {
     Collectible.find({})
         .skip(offset)
         .limit(limit)
-        .select('_id name slug brand dropDate rarity image storePrice totalIssued editionType totalAvailable createdAt updatedAt')
+        .select('_id name slug brand dropDate rarity image storePrice totalIssued revenue editionType totalAvailable createdAt updatedAt')
         .exec((err, data) => {
             if (err){
                 return res.status(400).json({

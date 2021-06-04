@@ -62,6 +62,14 @@ const Collectible = new mongoose.Schema({
     totalAvailable: {
         type: Number
     },
+    revenue:{
+        realised: {
+            type: Number
+        },
+        potential: {
+            type: Number
+        }
+    }
 }, { timestamps: true })
 
 module.exports = mongoose.model('Collectible', Collectible)
