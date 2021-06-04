@@ -64,7 +64,7 @@ exports.create = (req,res) => {
 exports.list = (req,res) => {
     Team.find({})
         .populate('author', '_id name username')
-        .select('_id name title photo slug author createdAt updatedAt')
+        .select('_id name title photo vip slug author createdAt updatedAt')
         .exec((err, data) => {
             if (err){
                 return res.status(400).json({
