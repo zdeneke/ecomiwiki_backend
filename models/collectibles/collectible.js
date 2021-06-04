@@ -1,71 +1,67 @@
 const mongoose = require('mongoose')
-const { ObjectId } = mongoose.Schema
 
-const collectibleSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        trim: true,
-        required: true,
-        max: 160,
-        min: 3,
-    },
-    brand: [{
-        type: ObjectId,
-        ref: 'Brand',
-        required: true
-    }],
-    veveImage: {
+const Collectible = new mongoose.Schema({
+    _id: {
         type: String,
         required: true
     },
-    eiImage: {
+    name:{
         type: String,
-    },
-    dropDate: {
-        type: Date
-    },
-    listPrice: {
-        type: Number
-    },
-    rarity: {
-        type: String
-    },
-    editions: {
-        type: Number
-    },
-    editionType: {
-        type: String
-    },
-    license: [{
-        type: ObjectId,
-        ref: 'License',
         required: true
-    }],
-    series: {
-        type: String
     },
     slug: {
         type: String,
         unique: true,
-        required: true,
+        index: true
     },
-    body: {
-        type: {},
-        required: true,
-        unique: true,
-        max: 4000000,
-        min: 200,
+    dropDate: {
+        type: Date
     },
-    excerpt: {
+    brand: {
+        name: {
+            type: String
+        },
+        id: {
+            type: String
+        }
+    },
+    licensor: {
+        name: {
+            type: String
+        },
+        id: {
+            type: String
+        },
+    },
+    description: {
         type: String,
-        max: 1000,
     },
-    mtitle: {
-        type: String,
+    series: {
+        type: String
     },
-    mdesc: {
-        type: String,
+    variety: {
+        type: String
+    },
+    rarity: {
+        type: String
+    },
+    image: {
+        url: {
+            type: String
+        },
+        direction: {
+            type: String
+        }
+    },
+    storePrice: {
+        type: Number
+    },
+    totalIssued:{
+        type: Number
+    },
+    totalAvailable: {
+        type: Number
     },
 }, { timestamps: true })
 
-module.exports = mongoose.model('Collectible', collectibleSchema)
+module.exports = mongoose.model('Collectible', Collectible)

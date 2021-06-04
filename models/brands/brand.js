@@ -1,30 +1,36 @@
 const mongoose = require('mongoose')
-const { ObjectId } = mongoose.Schema
 
-const brandSchema = new mongoose.Schema({
-    name: {
+const Brand = new mongoose.Schema({
+    _id: {
         type: String,
-        trim: true,
-        required: true,
-        max: 32
+        required: true
+    },
+    name:{
+        type: String,
+        required: true
     },
     slug: {
         type: String,
         unique: true,
         index: true
     },
-    license: [{
-        type: ObjectId,
-        ref: 'License',
-        required: true
-    }],
-    banner: {
+    description: {
+        type: String,
+    },
+    licensor: {
+        id: {
+            type: String
+        },
+        name: {
+            type: String
+        }
+    },
+    squareImage:{
         type: String
     },
-    description: {
+    landscapeImage: {
         type: String
-    }
+    },
 }, { timestamps: true })
 
-
-module.exports = mongoose.model('Brand', brandSchema)
+module.exports = mongoose.model('Brand', Brand)

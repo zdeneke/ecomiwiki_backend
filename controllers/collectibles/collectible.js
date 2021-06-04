@@ -86,10 +86,15 @@ exports.create = (req,res) => {
 }
 
 exports.list = (req,res) => {
+    let limit = req.body.limit ? parseInt(req.body.limit) : 10
+    let offset = req.body.offset ? parseInt(req.body.offset) : 0
+
+    console.log('req body limit is: ', req.body)
+
     Collectible.find({})
-        .populate('brand', '_id name, slug')
-        .populate('author', '_id name username')
-        .select('_id title slug brand author createdAt updatedAt')
+        .skip(offset)
+        .limit(limit)
+        .select('_id name slug brand dropDate rarity image storePrice totalIssued editionType totalAvailable createdAt updatedAt')
         .exec((err, data) => {
             if (err){
                 return res.status(400).json({
@@ -107,7 +112,6 @@ exports.read = (req,res) => {
         .populate('brand', '_id name, slug')
         .populate('license', '_id name, slug')
         .populate('author', '_id name username')
-        .select('_id title brand veveImage eiImage dropDate listPrice rarity editions editionType license series price collection body mtitle mdesc createdAt updatedAt')
         .exec((err, data) => {
             if (err){
                 return res.status(400).json({
