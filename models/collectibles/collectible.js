@@ -37,7 +37,12 @@ const Collectible = new mongoose.Schema({
         type: String,
     },
     series: {
-        type: String
+        name: {
+            type: String
+        },
+        id: {
+            type: String
+        }
     },
     variety: {
         type: String
