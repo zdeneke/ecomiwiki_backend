@@ -1,6 +1,9 @@
 const omiPrice = require('../../models/metrics/omiPrice')
 const omiBurn = require('../../models/metrics/omiBurn')
 const Revenue = require('../../models/revenue/revenue')
+const Brand = require('../../models/brands/brand')
+const License = require('../../models/license/license')
+const Collectible = require('../../models/collectibles/collectible')
 const { errorHandler } = require('../../helpers/dbErrorHandler')
 const { getPercentageChangeNumberOnly } = require('../../helpers/index')
 
@@ -113,5 +116,68 @@ exports.getVeveMetrics = (req,res) => {
                 }
             }
             res.json(metricResults)
+        })
+}
+
+exports.getBrandRevenueData = (req,res) => {
+    Brand.find({})
+        .select('name squareImage slug revenue.realised revenue.potential revenue.date')
+        .exec((err, data) => {
+            if (err){
+                return res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            let dataBlob = []
+            data.map((brand) => {
+                const dataBlobObj = {
+                    "name": brand.name,
+                    "revenueRealised": Number(brand.revenue.realised),
+                }
+                dataBlob.push(dataBlobObj)
+            })
+            res.json(dataBlob)
+        })
+}
+
+exports.getLicensorRevenueData = (req,res) => {
+    License.find({})
+        .select('name squareImage slug revenue.realised revenue.potential revenue.date')
+        .exec((err, data) => {
+            if (err){
+                return res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            let dataBlob = []
+            data.map((license) => {
+                const dataBlobObj = {
+                    "name": license.name,
+                    "revenueRealised": Number(license.revenue.realised),
+                }
+                dataBlob.push(dataBlobObj)
+            })
+            res.json(dataBlob)
+        })
+}
+
+exports.getCollectibleRevenueData = (req,res) => {
+    Collectible.find({})
+        .exec((err, data) => {
+            if (err){
+                return res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            let dataBlob = []
+            data.map((collectible) => {
+                console.log(`Collectible data is: `, collectible)
+                const dataBlobObj = {
+                    "name": collectible.name,
+                    "revenueRealised": collectible.revenue.realised
+                }
+                dataBlob.push(dataBlobObj)
+            })
+            res.json(dataBlob)
         })
 }

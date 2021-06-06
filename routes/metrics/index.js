@@ -7,7 +7,10 @@ const {
     getStoreRevenueData,
     getStoreRevenueTotal,
     getVeveMetrics,
-    getOmiBurnHeatMap
+    getOmiBurnHeatMap,
+    getBrandRevenueData,
+    getLicensorRevenueData,
+    getCollectibleRevenueData
 } = require('../../controllers/metrics/index')
 
 // Get OMI metrics
@@ -30,5 +33,14 @@ router.get('/metrics/revenue/total', getStoreRevenueTotal)
 
 // Get veve metrics
 router.get('/metrics/veve', getVeveMetrics)
+
+// Get brand revenue data
+router.get('/metrics/brands', getBrandRevenueData)
+
+// Get licensor revenue data
+router.get('/metrics/licensor', getLicensorRevenueData)
+
+// Get collectible revenue data
+router.get('/metrics/collectibles', getCollectibleRevenueData)
 
 module.exports = router
