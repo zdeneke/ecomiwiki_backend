@@ -10,7 +10,8 @@ const {
     getOmiBurnHeatMap,
     getBrandRevenueData,
     getLicensorRevenueData,
-    getCollectibleRevenueData
+    getCollectibleRevenueData,
+    getMarketplaceData
 } = require('../../controllers/metrics/index')
 
 // Get OMI metrics
@@ -42,5 +43,8 @@ router.get('/metrics/licensor', getLicensorRevenueData)
 
 // Get collectible revenue data
 router.get('/metrics/collectibles', getCollectibleRevenueData)
+
+// Get secondary marketplace data
+router.get('/metrics/marketplace', getMarketplaceData)
 
 module.exports = router

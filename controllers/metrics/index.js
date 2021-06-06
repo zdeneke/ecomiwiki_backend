@@ -4,8 +4,20 @@ const Revenue = require('../../models/revenue/revenue')
 const Brand = require('../../models/brands/brand')
 const License = require('../../models/license/license')
 const Collectible = require('../../models/collectibles/collectible')
+const MarketPlace = require('../../models/metrics/MarketPrice')
 const { errorHandler } = require('../../helpers/dbErrorHandler')
 const { getPercentageChangeNumberOnly } = require('../../helpers/index')
+
+exports.getMarketplaceData = (req,res) => {
+    MarketPlace.find().exec((err, data) => {
+        if (err){
+            return res.status(400).json({
+                error: errorHandler(err)
+            })
+        }
+        res.json(data)
+    })
+}
 
 exports.getOmiMetrics = (req,res) => {
     omiPrice.find().exec((err, data) => {
@@ -171,7 +183,6 @@ exports.getCollectibleRevenueData = (req,res) => {
             }
             let dataBlob = []
             data.map((collectible) => {
-                console.log(`Collectible data is: `, collectible)
                 const dataBlobObj = {
                     "name": collectible.name,
                     "revenueRealised": collectible.revenue.realised
