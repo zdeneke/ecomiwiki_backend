@@ -16,6 +16,9 @@ const MarketPrice = new mongoose.Schema({
     rarity: {
         type: String
     },
+    brand: {
+        type: String
+    },
     editionType: {
         type: String
     },

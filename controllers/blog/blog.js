@@ -20,9 +20,6 @@ exports.create = (req,res) => {
         }
         const { title, body, description, excerpt, categories, tags } = fields
 
-        console.log('Form fields are: ', fields)
-
-
         if (!title || !title.length){
             return res.status(400).json({
                 error: 'Title is required'
@@ -71,7 +68,6 @@ exports.create = (req,res) => {
 
 
         blog.save((err, result) => {
-            console.log('Error is: ', err)
             if (err){
                 return res.status(400).json({
                     error: errorHandler(err)
