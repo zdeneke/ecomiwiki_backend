@@ -92,6 +92,7 @@ exports.list = (req,res) => {
     console.log('req body limit is: ', req.body)
 
     Collectible.find({})
+        .sort({ dropDate: -1 })
         .skip(offset)
         .limit(limit)
         .select('_id name slug brand dropDate rarity image storePrice totalIssued revenue editionType totalAvailable createdAt updatedAt')

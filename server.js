@@ -8,6 +8,9 @@ require('dotenv').config()
 
 const { scheduledOmiUpdater, scheduledBurnUpdater } = require('./services/index')
 
+const { getOmiPrice } = require('./services/getOmiPrice')
+
+// getOmiPrice()
 // Routes
 const blogRoutes = require('./routes/blog/blog')
 const teamRoutes = require('./routes/team/team')

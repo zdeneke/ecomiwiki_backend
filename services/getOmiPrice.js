@@ -23,12 +23,12 @@ exports.getOmiPrice = () => {
                     'price.percent_change_60d' : data.data.OMI.quote.USD.percent_change_60d,
                     'price.percent_change_90d' : data.data.OMI.quote.USD.percent_change_90d,
                     'price.volume_24' : data.data.OMI.quote.volume_24h,
-                    circulating_supply : data.data.OMI.circulating_supply,
-                    cmc_rank : data.data.OMI.cmc_rank,
-                    max_supply : data.data.OMI.max_supply,
-                    num_market_pairs : data.data.OMI.num_market_pairs,
-                    total_supply : data.data.OMI.total_supply,
-                    market_cap : data.data.OMI.market_cap
+                    'circulating_supply' : data.data.OMI.circulating_supply,
+                    'cmc_rank' : data.data.OMI.cmc_rank,
+                    'max_supply' : data.data.OMI.max_supply,
+                    'num_market_pairs' : data.data.OMI.num_market_pairs,
+                    'total_supply' : data.data.OMI.total_supply,
+                    'market_cap' : data.data.OMI.market_cap
                 },
                 {upsert: true},
                 function (err, doc) {
