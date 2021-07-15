@@ -4,6 +4,7 @@ const {
     getOmiMetrics,
     getOmiBurn,
     getOmiBurnTotal,
+    getUserGrowthData,
     getStoreRevenueData,
     getStoreRevenueTotal,
     getVeveMetrics,
@@ -34,6 +35,9 @@ router.get('/metrics/revenue/total', getStoreRevenueTotal)
 
 // Get veve metrics
 router.get('/metrics/veve', getVeveMetrics)
+
+// Get veve user growth data
+router.get('/metrics/user/growth', getUserGrowthData)
 
 // Get brand revenue data
 router.get('/metrics/brands', getBrandRevenueData)

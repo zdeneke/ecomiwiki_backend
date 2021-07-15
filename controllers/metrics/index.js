@@ -1,5 +1,6 @@
 const omiPrice = require('../../models/metrics/omiPrice')
 const omiBurn = require('../../models/metrics/omiBurn')
+const UserCount = require('../../models/metrics/userCount')
 const Revenue = require('../../models/revenue/revenue')
 const Brand = require('../../models/brands/brand')
 const License = require('../../models/license/license')
@@ -21,6 +22,17 @@ exports.getMarketplaceData = (req,res) => {
 
 exports.getOmiMetrics = (req,res) => {
     omiPrice.find().exec((err, data) => {
+        if (err){
+            return res.status(400).json({
+                error: errorHandler(err)
+            })
+        }
+        res.json(data)
+    })
+}
+
+exports.getUserGrowthData = (req,res) => {
+    UserCount.find().exec((err, data) => {
         if (err){
             return res.status(400).json({
                 error: errorHandler(err)
