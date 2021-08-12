@@ -6,11 +6,29 @@ const Brand = require('../../models/brands/brand')
 const License = require('../../models/license/license')
 const Collectible = require('../../models/collectibles/collectible')
 const MarketPlace = require('../../models/metrics/MarketPrice')
+const MarketPriceHistoric = require('../../models/metrics/MarketPriceHistoric')
 const { errorHandler } = require('../../helpers/dbErrorHandler')
 const { getPercentageChangeNumberOnly } = require('../../helpers/index')
 
+exports.getMarketPriceHistoricData = (req,res) => {
+    const slug = req.params.slug
+    console.log('INCOMING!!! ', slug)
+
+    MarketPriceHistoric.findOne({ collectibleId: slug }).exec((err, data) => {
+        if (err){
+            return res.status(400).json({
+                error: errorHandler(err)
+            })
+        }
+        res.json(data)
+    })
+}
+
 exports.getMarketplaceData = (req,res) => {
-    MarketPlace.find().exec((err, data) => {
+    MarketPlace.find()
+        .populate('MarketPriceHistoric', 'lowestPrice')
+        .exec((err, data) => {
+            console.log('data is: ', data)
         if (err){
             return res.status(400).json({
                 error: errorHandler(err)
