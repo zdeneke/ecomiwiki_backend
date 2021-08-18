@@ -163,7 +163,7 @@ exports.getVeveMetrics = (req,res) => {
 
 exports.getBrandRevenueData = (req,res) => {
     Brand.find({})
-        .select('name squareImage slug revenue.realised revenue.potential revenue.date')
+        .select('name squareImage slug revenue')
         .exec((err, data) => {
             if (err){
                 return res.status(400).json({
@@ -173,8 +173,7 @@ exports.getBrandRevenueData = (req,res) => {
             let dataBlob = []
             data.map((brand) => {
                 const dataBlobObj = {
-                    "name": brand.name,
-                    "revenueRealised": Number(brand.revenue.realised),
+                    ...brand
                 }
                 dataBlob.push(dataBlobObj)
             })

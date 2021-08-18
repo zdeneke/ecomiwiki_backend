@@ -26,7 +26,9 @@ const Brand = new mongoose.Schema({
         }
     },
     squareImage:{
-        type: String
+        url: {
+            type: String
+        },
     },
     landscapeImage: {
         type: String
