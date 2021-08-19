@@ -12,6 +12,7 @@ const { getPercentageChangeNumberOnly } = require('../../helpers/index')
 
 exports.getMarketPriceHistoricData = (req,res) => {
     const slug = req.params.slug
+    console.log('INCOMING!!! ', slug)
 
     MarketPriceHistoric.findOne({ collectibleId: slug }).exec((err, data) => {
         if (err){
@@ -25,7 +26,7 @@ exports.getMarketPriceHistoricData = (req,res) => {
 
 exports.getMarketplaceData = (req,res) => {
     MarketPlace.find()
-        // .populate('MarketPriceHistoric', 'lowestPrice')
+        .populate('MarketPriceHistoric', 'lowestPrice')
         .exec((err, data) => {
             console.log('data is: ', data)
         if (err){

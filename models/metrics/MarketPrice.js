@@ -19,10 +19,13 @@ const MarketPrice = new mongoose.Schema({
     brand: {
         type: String
     },
+    storePrice: {
+        type: Number
+    },
     editionType: {
         type: String
     },
-    metrics:[{
+    metrics:{
         issueNumber: {
             type: Number
         },
@@ -32,11 +35,27 @@ const MarketPrice = new mongoose.Schema({
         totalListings: {
             type: Number
         },
-        date: {
-            type: Date,
-            default: Date.now()
-        }
-    }]
+        createdAt: {
+            type: Date
+        },
+        updatedAt: {
+            type: Date
+        },
+        prevSold: {
+            "price": {
+                type: Number
+            },
+            "createdAt": {
+                type: Date
+            },
+            "issueNumber": {
+                type: Number
+            },
+            "listingType": {
+                type: String
+            }
+        },
+    }
 }, { timestamps: true })
 
-module.exports = mongoose.model('MarketPrice', MarketPrice)
+module.exports = mongoose.model('MarketPrice', MarketPrice, 'marketprices')
