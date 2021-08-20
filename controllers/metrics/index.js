@@ -5,7 +5,8 @@ const Revenue = require('../../models/revenue/revenue')
 const Brand = require('../../models/brands/brand')
 const License = require('../../models/license/license')
 const Collectible = require('../../models/collectibles/collectible')
-const MarketPlace = require('../../models/metrics/MarketPrice')
+const MarketPrice = require('../../models/metrics/MarketPrice')
+const ComicPrice = require('../../models/metrics/ComicPrice')
 const MarketPriceHistoric = require('../../models/metrics/MarketPriceHistoric')
 const { errorHandler } = require('../../helpers/dbErrorHandler')
 const { getPercentageChangeNumberOnly } = require('../../helpers/index')
@@ -25,7 +26,7 @@ exports.getMarketPriceHistoricData = (req,res) => {
 }
 
 exports.getMarketplaceData = (req,res) => {
-    MarketPlace.find()
+    MarketPrice.find()
         .populate('MarketPriceHistoric', 'lowestPrice')
         .exec((err, data) => {
             console.log('data is: ', data)
@@ -36,6 +37,20 @@ exports.getMarketplaceData = (req,res) => {
         }
         res.json(data)
     })
+}
+
+exports.getMarketplaceComicData = (req,res) => {
+    ComicPrice.find()
+        .populate('ComicPriceHistoric', 'lowestPrice')
+        .exec((err, data) => {
+            console.log('data is: ', data)
+            if (err){
+                return res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            res.json(data)
+        })
 }
 
 exports.getOmiMetrics = (req,res) => {

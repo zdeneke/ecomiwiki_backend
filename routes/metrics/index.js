@@ -13,7 +13,8 @@ const {
     getLicensorRevenueData,
     getCollectibleRevenueData,
     getMarketplaceData,
-    getMarketPriceHistoricData
+    getMarketPriceHistoricData,
+    getMarketplaceComicData
 } = require('../../controllers/metrics/index')
 
 // Get OMI metrics
@@ -49,8 +50,11 @@ router.get('/metrics/licensor', getLicensorRevenueData)
 // Get collectible revenue data
 router.get('/metrics/collectibles', getCollectibleRevenueData)
 
-// Get secondary marketplace data
+// Get secondary marketplace data for collectibles
 router.get('/metrics/marketplace', getMarketplaceData)
+
+// Get secondary marketplace data for comics
+router.get('/metrics/marketplace/comics', getMarketplaceComicData)
 
 // Get secondary marketplace historical sale data
 router.get('/metrics/marketplace/history/:slug', getMarketPriceHistoricData)
