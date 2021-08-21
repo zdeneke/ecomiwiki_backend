@@ -89,8 +89,6 @@ exports.list = (req,res) => {
     let limit = req.body.limit ? parseInt(req.body.limit) : 10
     let offset = req.body.offset ? parseInt(req.body.offset) : 0
 
-    console.log('req body limit is: ', req.body)
-
     Collectible.find({})
         .sort({ dropDate: -1 })
         .skip(offset)
@@ -196,6 +194,46 @@ exports.update = (req,res) => {
         })
 
 }
+
+exports.listBySearch = (req, res) => {
+    let order = req.body.order ? req.body.order : "desc";
+    let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
+    let limit = req.body.limit ? parseInt(req.body.limit) : 100;
+    let offset = parseInt(req.body.offset);
+    let findArgs = {};
+
+    for (let key in req.body.filters) {
+        if (req.body.filters[key].length > 0) {
+            if (key === "price") {
+                // gte -  greater than price [0-10]
+                // lte - less than
+                findArgs[key] = {
+                    $gte: req.body.filters[key][0],
+                    $lte: req.body.filters[key][1]
+                };
+            } else {
+                findArgs[key] = req.body.filters[key];
+            }
+        }
+    }
+
+    Collectible.find(findArgs)
+        .sort([[sortBy, order]])
+        .skip(offset)
+        .limit(limit)
+        .exec((err, data) => {
+            if (err) {
+                return res.status(400).json({
+                    error: "Products not found"
+                });
+            }
+            res.json({
+                size: data.length,
+                data
+            });
+        });
+};
+
 
 // exports.photo = (req,res) => {
 //     const slug = req.params.slug.toLowerCase()

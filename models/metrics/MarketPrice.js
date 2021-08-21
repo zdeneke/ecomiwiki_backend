@@ -17,7 +17,15 @@ const MarketPrice = new mongoose.Schema({
         type: String
     },
     brand: {
-        type: String
+        "name": {
+            type: String
+        },
+        "id": {
+            type: String
+        },
+        "thumbnailUrl": {
+            type: String
+        },
     },
     storePrice: {
         type: Number

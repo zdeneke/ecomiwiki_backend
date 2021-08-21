@@ -11,7 +11,7 @@ const { brandCreateValidator } = require('../../validators/brand')
 router.post('/brand', brandCreateValidator, requireSignin, adminMiddleware, create)
 
 // List
-router.get('/brands', list)
+router.post('/brands', list)
 
 // Read
 router.get('/brand/:slug', read)

@@ -46,14 +46,22 @@ exports.read = (req,res) => {
 }
 
 exports.list = (req,res) => {
+    let limit = req.body.limit ? parseInt(req.body.limit) : 10
+    let offset = req.body.offset ? parseInt(req.body.offset) : 0
+
     Brand.find({})
+        .skip(offset)
+        .limit(limit)
         .exec((err, data) => {
             if (err){
                 return res.status(400).json({
                     error: errorHandler(err)
                 })
             }
-            res.json(data)
+            res.json({
+                size: data.length,
+                data
+            })
         })
 }
 
