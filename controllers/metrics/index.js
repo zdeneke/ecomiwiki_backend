@@ -13,7 +13,6 @@ const { getPercentageChangeNumberOnly } = require('../../helpers/index')
 
 exports.getMarketPriceHistoricData = (req,res) => {
     const slug = req.params.slug
-    console.log('INCOMING!!! ', slug)
 
     MarketPriceHistoric.findOne({ collectibleId: slug }).exec((err, data) => {
         if (err){
@@ -159,6 +158,7 @@ exports.getVeveMetrics = (req,res) => {
                     error: errorHandler(err)
                 })
             }
+            data[0].revenue.reverse()
             const metricResults = {
                 'revenue':{
                     "last_updated": data[0].revenue[0].date,
@@ -235,4 +235,32 @@ exports.getCollectibleRevenueData = (req,res) => {
             })
             res.json(dataBlob)
         })
+}
+
+exports.getValuation = (req,res) => {
+
+    const usersCollectibles = req.body.collectibles
+
+    let collectiblesArr = []
+    usersCollectibles.map(collectible => {
+        collectiblesArr.push(collectible.collectibleId)
+    })
+
+    let valuation = 0
+    let quantity = 1
+    MarketPrice.find({collectibleId: { $in : collectiblesArr } })
+        .exec((err, data) => {
+            if (err){
+                return res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            data.map((value) => {
+                const pluckIt = usersCollectibles.filter(collectible => (collectible.collectibleId) === value.collectibleId)
+                console.log('pluck it is: ', pluckIt[0].quantity)
+                valuation += value.metrics.lowestPrice * pluckIt[0].quantity
+            })
+            res.json({ valuation })
+        })
+
 }

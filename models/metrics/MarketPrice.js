@@ -27,6 +27,10 @@ const MarketPrice = new mongoose.Schema({
             type: String
         },
     },
+    image: {
+        direction: String,
+        thumbnailUrl: String
+    },
     storePrice: {
         type: Number
     },

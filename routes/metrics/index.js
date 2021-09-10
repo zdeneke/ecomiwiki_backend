@@ -14,7 +14,8 @@ const {
     getCollectibleRevenueData,
     getMarketplaceData,
     getMarketPriceHistoricData,
-    getMarketplaceComicData
+    getMarketplaceComicData,
+    getValuation
 } = require('../../controllers/metrics/index')
 
 // Get OMI metrics
@@ -58,5 +59,8 @@ router.get('/metrics/marketplace/comics', getMarketplaceComicData)
 
 // Get secondary marketplace historical sale data
 router.get('/metrics/marketplace/history/:slug', getMarketPriceHistoricData)
+
+// Get valuation
+router.post('/metrics/account/valuation', getValuation)
 
 module.exports = router
