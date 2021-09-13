@@ -240,6 +240,7 @@ exports.getCollectibleRevenueData = (req,res) => {
 exports.getValuation = (req,res) => {
 
     const usersCollectibles = req.body.collectibles
+    console.log('users collectibles is: ', usersCollectibles)
 
     let collectiblesArr = []
     usersCollectibles.map(collectible => {
