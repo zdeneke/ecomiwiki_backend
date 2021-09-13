@@ -240,14 +240,13 @@ exports.getCollectibleRevenueData = (req,res) => {
 exports.getValuation = (req,res) => {
 
     const usersCollectibles = req.body.collectibles
-    console.log('users collectibles is: ', usersCollectibles)
-
     let collectiblesArr = []
     usersCollectibles.map(collectible => {
         collectiblesArr.push(collectible.collectibleId)
     })
 
     let valuation = 0
+    let retailPrice = 0
     let quantity = 1
     MarketPrice.find({collectibleId: { $in : collectiblesArr } })
         .exec((err, data) => {
@@ -258,10 +257,14 @@ exports.getValuation = (req,res) => {
             }
             data.map((value) => {
                 const pluckIt = usersCollectibles.filter(collectible => (collectible.collectibleId) === value.collectibleId)
-                console.log('pluck it is: ', pluckIt[0].quantity)
+                console.log(`collectible is ${value}`)
                 valuation += value.metrics.lowestPrice * pluckIt[0].quantity
+                retailPrice += value.storePrice * pluckIt[0].quantity
             })
-            res.json({ valuation })
+            res.json({
+                valuation,
+                retailPrice
+            })
         })
 
 }
