@@ -40,7 +40,7 @@ exports.getMarketplaceData = (req,res) => {
 
 exports.getMarketplaceComicData = (req,res) => {
     ComicPrice.find()
-        .populate('ComicPriceHistoric', 'lowestPrice')
+        // .populate('ComicPriceHistoric', 'lowestPrice')
         .exec((err, data) => {
             console.log('data is: ', data)
             if (err){
