@@ -28,7 +28,6 @@ exports.getMarketplaceData = (req,res) => {
     MarketPrice.find()
         .populate('MarketPriceHistoric', 'lowestPrice')
         .exec((err, data) => {
-            console.log('data is: ', data)
         if (err){
             return res.status(400).json({
                 error: errorHandler(err)
@@ -42,7 +41,6 @@ exports.getMarketplaceComicData = (req,res) => {
     ComicPrice.find()
         // .populate('ComicPriceHistoric', 'lowestPrice')
         .exec((err, data) => {
-            console.log('data is: ', data)
             if (err){
                 return res.status(400).json({
                     error: errorHandler(err)
@@ -237,7 +235,7 @@ exports.getCollectibleRevenueData = (req,res) => {
         })
 }
 
-exports.getValuation = (req,res) => {
+exports.getCollectiblesValuation = (req,res) => {
 
     const usersCollectibles = req.body.collectibles
     let collectiblesArr = []
@@ -257,7 +255,6 @@ exports.getValuation = (req,res) => {
             }
             data.map((value) => {
                 const pluckIt = usersCollectibles.filter(collectible => (collectible.collectibleId) === value.collectibleId)
-                console.log(`collectible is ${value}`)
                 valuation += value.metrics.lowestPrice * pluckIt[0].quantity
                 retailPrice += value.storePrice * pluckIt[0].quantity
             })
@@ -266,5 +263,35 @@ exports.getValuation = (req,res) => {
                 retailPrice
             })
         })
+}
 
+exports.getComicsValuation = (req,res) => {
+    console.log('Getting valuation for ', req.body.comics)
+    const usersComics = req.body.comics
+    let comicsArr = []
+    usersComics.map(comic => {
+        comicsArr.push(comic.uniqueCoverId)
+    })
+
+    let valuation = 0
+    let retailPrice = 0
+    let quantity = 1
+    ComicPrice.find({ uniqueCoverId: {$in : comicsArr }})
+        .exec((err, data) => {
+            if (err){
+                return res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            data.map((value) => {
+                const pluckIt = usersComics.filter(comic => (comic.uniqueCoverId) === value.uniqueCoverId)
+                valuation += value.metrics.lowestPrice * pluckIt[0].quantity
+                retailPrice += value.storePrice * pluckIt[0].quantity
+            })
+
+            res.json({
+                valuation,
+                retailPrice
+            })
+        })
 }
