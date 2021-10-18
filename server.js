@@ -25,6 +25,7 @@ const brandRoutes = require('./routes/brand/brand')
 const metricRoutes = require('./routes/metrics/index')
 const storeRoutes = require('./routes/ecomi-api/store')
 const socialRoutes = require('./routes/social/social')
+const tracerRoutes = require('./routes/tracer/tracer')
 
 // Ecomi/VEVE API Routes
 const ecomiMarketplaceAPI = require('./routes/ecomi-api/marketplace')
@@ -66,6 +67,7 @@ app.use('/api', ecomiMarketplaceAPI)
 app.use('/api', ecomiUserAPI)
 app.use('/api', storeRoutes)
 app.use('/api', socialRoutes)
+app.use('/api', tracerRoutes)
 
 // Port
 const port = process.env.PORT || 8000
