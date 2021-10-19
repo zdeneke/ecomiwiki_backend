@@ -110,7 +110,7 @@ exports.list = (req,res) => {
 exports.read = (req,res) => {
     const slug = req.params.slug.toLowerCase()
 
-    Collectible.findOne({ slug })
+    Collectible.findOne({ _id: slug })
         .populate('brand', '_id name, slug')
         .populate('license', '_id name, slug')
         .populate('author', '_id name username')

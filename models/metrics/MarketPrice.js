@@ -23,9 +23,11 @@ const MarketPrice = new mongoose.Schema({
         "id": {
             type: String
         },
-        "thumbnailUrl": {
-            type: String
-        },
+        "squareImage":{
+            "thumbnailUrl": {
+                type: String
+            },
+        }
     },
     image: {
         direction: String,
@@ -36,6 +38,10 @@ const MarketPrice = new mongoose.Schema({
     },
     editionType: {
         type: String
+    },
+    history: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'MarketPriceHistoric'
     },
     metrics:{
         issueNumber: {

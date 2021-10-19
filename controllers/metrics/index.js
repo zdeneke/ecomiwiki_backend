@@ -8,6 +8,7 @@ const Collectible = require('../../models/collectibles/collectible')
 const MarketPrice = require('../../models/metrics/MarketPrice')
 const ComicPrice = require('../../models/metrics/ComicPrice')
 const MarketPriceHistoric = require('../../models/metrics/MarketPriceHistoric')
+const MarketComicPriceHistoric = require('../../models/metrics/MarketComicPriceHistoric')
 const { errorHandler } = require('../../helpers/dbErrorHandler')
 const { getPercentageChangeNumberOnly } = require('../../helpers/index')
 
@@ -26,7 +27,7 @@ exports.getMarketPriceHistoricData = (req,res) => {
 
 exports.getMarketplaceData = (req,res) => {
     MarketPrice.find()
-        .populate('MarketPriceHistoric', 'lowestPrice')
+        .populate('history')
         .exec((err, data) => {
         if (err){
             return res.status(400).json({
@@ -48,6 +49,19 @@ exports.getMarketplaceComicData = (req,res) => {
             }
             res.json(data)
         })
+}
+
+exports.getMarketPriceComicHistoricData = (req,res) => {
+    const slug = req.params.slug
+
+    MarketComicPriceHistoric.findOne({ uniqueCoverId: slug }).exec((err, data) => {
+        if (err){
+            return res.status(400).json({
+                error: errorHandler(err)
+            })
+        }
+        res.json(data)
+    })
 }
 
 exports.getOmiMetrics = (req,res) => {
@@ -266,7 +280,6 @@ exports.getCollectiblesValuation = (req,res) => {
 }
 
 exports.getComicsValuation = (req,res) => {
-    console.log('Getting valuation for ', req.body.comics)
     const usersComics = req.body.comics
     let comicsArr = []
     usersComics.map(comic => {

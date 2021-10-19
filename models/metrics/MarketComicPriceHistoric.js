@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 
 
-const MarketPriceHistoric = new mongoose.Schema({
-        collectibleId: {
+const MarketComicPriceHistoric = new mongoose.Schema({
+        uniqueCoverId: {
             type: String,
         },
         prices: [{
@@ -26,23 +26,9 @@ const MarketPriceHistoric = new mongoose.Schema({
                     type: Number
                 },
             },
-            prevSold: {
-                "price": {
-                    type: Number
-                },
-                "createdAt": {
-                    type: Date
-                },
-                "issueNumber": {
-                    type: Number
-                },
-                "listingType": {
-                    type: String
-                }
-            }
         }]
     },
     { timestamps: true, strict: false })
 
 
-module.exports = mongoose.model('MarketPriceHistoric', MarketPriceHistoric, 'historicprices')
+module.exports = mongoose.model('MarketComicPriceHistoric', MarketComicPriceHistoric, 'historiccomicprices')
