@@ -38,6 +38,21 @@ exports.getMarketplaceData = (req,res) => {
     })
 }
 
+exports.getSingleMarketCollectibleData = (req,res) => {
+
+    const slug = req.params.slug
+
+    MarketPrice.find({ collectibleId: slug }).exec((err, data) => {
+        if (err){
+            return res.status(400).json({
+                error: errorHandler(err)
+            })
+        }
+        res.json(data)
+    })
+
+}
+
 exports.getMarketplaceComicData = (req,res) => {
     ComicPrice.find()
         // .populate('ComicPriceHistoric', 'lowestPrice')
