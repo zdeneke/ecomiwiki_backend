@@ -5,7 +5,7 @@ const MarketPriceHistoric = new mongoose.Schema({
         collectibleId: {
             type: String,
         },
-        prices: [{
+        history: [{
             storePrice: {
                 type: Number
             },

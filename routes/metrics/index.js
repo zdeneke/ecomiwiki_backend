@@ -1,5 +1,7 @@
 const express = require('express')
 const router = express.Router()
+const apicache = require('apicache')
+
 const {
     getOmiMetrics,
     getOmiBurn,
@@ -20,6 +22,9 @@ const {
     getMarketPriceComicHistoricData,
     getSingleMarketCollectibleData
 } = require('../../controllers/metrics/index')
+
+// Init cache
+let cache = apicache.middleware
 
 // Get OMI metrics
 router.get('/metrics/omi', getOmiMetrics)
@@ -46,28 +51,28 @@ router.get('/metrics/veve', getVeveMetrics)
 router.get('/metrics/user/growth', getUserGrowthData)
 
 // Get brand revenue data
-router.get('/metrics/brands', getBrandRevenueData)
+router.get('/metrics/brands', cache('61 minutes'), getBrandRevenueData)
 
 // Get licensor revenue data
-router.get('/metrics/licensor', getLicensorRevenueData)
+router.get('/metrics/licensor', cache('61 minutes'), getLicensorRevenueData)
 
 // Get collectible revenue data
-router.get('/metrics/collectibles', getCollectibleRevenueData)
+router.get('/metrics/collectibles', cache('61 minutes'), getCollectibleRevenueData)
 
 // Get secondary marketplace data for collectibles
-router.get('/metrics/marketplace/collectibles', getMarketplaceData)
+router.get('/metrics/marketplace/collectibles', cache('61 minutes'), getMarketplaceData)
 
 // Get secondary marketplace data for single (collectible)
-router.get('/metrics/marketplace/collectible/:slug', getSingleMarketCollectibleData)
+router.get('/metrics/marketplace/collectible/:slug', cache('61 minutes'), getSingleMarketCollectibleData)
 
 // Get secondary marketplace historical sale data (collectible)
-router.get('/metrics/marketplace/collectible/history/:slug', getMarketPriceHistoricData)
+router.get('/metrics/marketplace/collectible/history/:slug', cache('61 minutes'), getMarketPriceHistoricData)
 
 // Get secondary marketplace data for comics
-router.get('/metrics/marketplace/comics', getMarketplaceComicData)
+router.get('/metrics/marketplace/comics',cache('61 minutes'), getMarketplaceComicData)
 
 // Get secondary marketplace historical sale data (comic)
-router.get('/metrics/marketplace/comic/history/:slug', getMarketPriceComicHistoricData)
+router.get('/metrics/marketplace/comic/history/:slug', cache('61 minutes'), getMarketPriceComicHistoricData)
 
 // Get collectibles valuation
 router.post('/metrics/account/collectibles/valuation', getCollectiblesValuation)

@@ -15,7 +15,32 @@ const { getPercentageChangeNumberOnly } = require('../../helpers/index')
 exports.getMarketPriceHistoricData = (req,res) => {
     const slug = req.params.slug
 
-    MarketPriceHistoric.findOne({ collectibleId: slug }).exec((err, data) => {
+    MarketPriceHistoric.aggregate([
+        {
+            "$match": {
+                collectibleId: slug,
+                "history.date": {
+                    $gte: new Date(new Date().getTime() - (24 * 60 * 60 * 1000))
+                }
+            }
+        },
+        {
+            "$set": {
+                "history": {
+                    "$filter": {
+                        "input": "$history",
+                        "as": "h",
+                        "cond": {
+                            $gte: [
+                                "$$h.date",
+                                new Date(new Date().getTime() - (24 * 60 * 60 * 1000))
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    ]).exec((err, data) => {
         if (err){
             return res.status(400).json({
                 error: errorHandler(err)
@@ -23,6 +48,22 @@ exports.getMarketPriceHistoricData = (req,res) => {
         }
         res.json(data)
     })
+
+    // MarketPriceHistoric.findOne({
+    //     collectibleId: slug,
+    //     history: {
+    //         date: {
+    //             $lte: new Date("2021-10-18T00:00:00.000Z")
+    //         }
+    //     }
+    // }).exec((err, data) => {
+    //     if (err){
+    //         return res.status(400).json({
+    //             error: errorHandler(err)
+    //         })
+    //     }
+    //     res.json(data)
+    // })
 }
 
 exports.getMarketplaceData = (req,res) => {
@@ -69,7 +110,32 @@ exports.getMarketplaceComicData = (req,res) => {
 exports.getMarketPriceComicHistoricData = (req,res) => {
     const slug = req.params.slug
 
-    MarketComicPriceHistoric.findOne({ uniqueCoverId: slug }).exec((err, data) => {
+    MarketComicPriceHistoric.aggregate([
+        {
+            "$match": {
+                uniqueCoverId: slug,
+                "history.date": {
+                    $gte: new Date(new Date().getTime() - (24 * 60 * 60 * 1000))
+                }
+            }
+        },
+        {
+            "$set": {
+                "history": {
+                    "$filter": {
+                        "input": "$history",
+                        "as": "h",
+                        "cond": {
+                            $gte: [
+                                "$$h.date",
+                                new Date(new Date().getTime() - (24 * 60 * 60 * 1000))
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    ]).exec((err, data) => {
         if (err){
             return res.status(400).json({
                 error: errorHandler(err)
@@ -77,6 +143,15 @@ exports.getMarketPriceComicHistoricData = (req,res) => {
         }
         res.json(data)
     })
+
+    // MarketComicPriceHistoric.findOne({ uniqueCoverId: slug }).exec((err, data) => {
+    //     if (err){
+    //         return res.status(400).json({
+    //             error: errorHandler(err)
+    //         })
+    //     }
+    //     res.json(data)
+    // })
 }
 
 exports.getOmiMetrics = (req,res) => {
