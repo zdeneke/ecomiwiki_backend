@@ -67,15 +67,24 @@ exports.getMarketPriceHistoricData = (req,res) => {
 }
 
 exports.getMarketplaceData = (req,res) => {
+    let limit = req.body.limit ? parseInt(req.body.limit) : 15
+    let offset = req.body.offset ? parseInt(req.body.offset) : 0
+
     MarketPrice.find()
+        .sort({ createdAt: -1 })
         .populate('history')
+        .skip(offset)
+        .limit(limit)
         .exec((err, data) => {
         if (err){
             return res.status(400).json({
                 error: errorHandler(err)
             })
         }
-        res.json(data)
+        res.json({
+            size: data.length,
+            data
+        })
     })
 }
 
@@ -92,6 +101,32 @@ exports.getSingleMarketCollectibleData = (req,res) => {
         res.json(data)
     })
 
+}
+
+exports.getCollectibleChangeSummary = (req,res) => {
+    const slug = req.params.slug
+    MarketPriceHistoric.find({ collectibleId: slug})
+        .exec((err, data) => {
+            if (err){
+                return res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            const currentPrice = data[0].history[0] ? data[0].history[0].value : 0
+            const calcThis = (endDay) => {
+                return (currentPrice - endDay) / endDay * 100
+            }
+            const results = {
+                "currentPrice": currentPrice,
+                "one_day_change": data[0].history[23] ? calcThis(data[0].history[23].value) : null,
+                "one_week_change": data[0].history[161] ? calcThis(data[0].history[161].value) : null,
+                "one_month_change": data[0].history[644] ? calcThis(data[0].history[961].value) : null,
+                "three_month_change": data[0].history[1932] ? calcThis(data[0].history[1932].value) : null,
+                "six_month_change": data[0].history[3864] ? calcThis(data[0].history[3864].value) : null,
+                "one_year_change": data[0].history[7728] ? calcThis(data[0].history[7728].value) : null
+            }
+            res.json(results)
+        })
 }
 
 exports.getMarketplaceComicData = (req,res) => {

@@ -17,11 +17,20 @@ const Collectible = new mongoose.Schema({
     dropDate: {
         type: Date
     },
+    soldOutDate: {
+        type: Date
+    },
+    totalLikes: {
+        type: Number
+    },
     brand: {
         name: {
             type: String
         },
         id: {
+            type: String
+        },
+        slug: {
             type: String
         }
     },
@@ -50,16 +59,51 @@ const Collectible = new mongoose.Schema({
     rarity: {
         type: String
     },
+    backgroundimage: {
+        url: {
+            type: String
+        },
+        direction: {
+            type: String
+        },
+        thumbnailUrl: {
+            type: String
+        },
+        lowResolutionUrl: {
+            type: String
+        },
+        fullResolutionUrl: {
+            type: String
+        },
+        highResolutionUrl: {
+            type: String
+        },
+    },
     image: {
         url: {
             type: String
         },
         direction: {
             type: String
-        }
+        },
+        thumbnailUrl: {
+            type: String
+        },
+        lowResolutionUrl: {
+            type: String
+        },
+        fullResolutionUrl: {
+            type: String
+        },
+        highResolutionUrl: {
+            type: String
+        },
     },
     storePrice: {
         type: Number
+    },
+    editionType: {
+        type: String
     },
     totalIssued:{
         type: Number

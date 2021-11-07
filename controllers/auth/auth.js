@@ -12,11 +12,11 @@ exports.signup = (req,res) => {
                 })
             }
 
-            const { name, email, password } = req.body
+            const { email, password } = req.body
             let username = shortId.generate()
             let profile = `${process.env.CLIENT_URL}/profile/${username}`
 
-            let newUser = new User({ name, email, password, profile, username })
+            let newUser = new User({ email, password, profile })
 
             newUser.save((err, success) => {
                 if (err){

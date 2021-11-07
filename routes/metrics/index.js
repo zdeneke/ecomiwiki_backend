@@ -20,7 +20,8 @@ const {
     getCollectiblesValuation,
     getComicsValuation,
     getMarketPriceComicHistoricData,
-    getSingleMarketCollectibleData
+    getSingleMarketCollectibleData,
+    getCollectibleChangeSummary
 } = require('../../controllers/metrics/index')
 
 // Init cache
@@ -60,10 +61,13 @@ router.get('/metrics/licensor', cache('61 minutes'), getLicensorRevenueData)
 router.get('/metrics/collectibles', cache('61 minutes'), getCollectibleRevenueData)
 
 // Get secondary marketplace data for collectibles
-router.get('/metrics/marketplace/collectibles', cache('61 minutes'), getMarketplaceData)
+router.post('/metrics/marketplace/collectibles', getMarketplaceData)
 
 // Get secondary marketplace data for single (collectible)
-router.get('/metrics/marketplace/collectible/:slug', cache('61 minutes'), getSingleMarketCollectibleData)
+router.get('/metrics/marketplace/collectible/:slug', getSingleMarketCollectibleData)
+
+// Get percentage change summary for collectible
+router.get('/metrics/marketplace/collectible/:slug/percentages', getCollectibleChangeSummary)
 
 // Get secondary marketplace historical sale data (collectible)
 router.get('/metrics/marketplace/collectible/history/:slug', cache('61 minutes'), getMarketPriceHistoricData)
