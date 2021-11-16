@@ -1,11 +1,15 @@
 const express = require('express')
 const router = express.Router()
+const apicache = require('apicache')
 const { create, list, read, remove, update, listRelated, listSearch, listBySearch } = require('../../controllers/collectibles/collectible')
 const { requireSignin, adminMiddleware } = require('../../controllers/auth/auth')
 
+// Init cache
+let cache = apicache.middleware
+
 router.post('/collectible', requireSignin, adminMiddleware, create)
-router.post('/collectibles', list)
-router.get('/collectible/:slug', read)
+router.post('/collectibles', cache('61 minutes'), list)
+router.get('/collectible/:slug', cache('61 minutes'), read)
 router.delete('/collectible/:slug', requireSignin, adminMiddleware, remove)
 router.put('/collectible/:slug', requireSignin, adminMiddleware, update)
 router.post("/collectibles/by/search", listBySearch);

@@ -60,7 +60,7 @@ router.get('/metrics/veve', getVeveMetrics)
 router.get('/metrics/user/growth', getUserGrowthData)
 
 // Get brand revenue data
-router.get('/metrics/brands', cache('61 minutes'), getBrandRevenueData)
+router.get('/metrics/brands', cache('60 minutes'), getBrandRevenueData)
 
 // Get licensor revenue data
 router.get('/metrics/licensor', cache('61 minutes'), getLicensorRevenueData)
@@ -69,7 +69,7 @@ router.get('/metrics/licensor', cache('61 minutes'), getLicensorRevenueData)
 router.get('/metrics/collectibles', cache('61 minutes'), getCollectibleRevenueData)
 
 // Get secondary marketplace data for collectibles
-router.post('/metrics/marketplace/collectibles', getMarketplaceData)
+router.post('/metrics/marketplace/collectibles', cache('61 minutes'), getMarketplaceData)
 
 // Search secondary marketplace data collectibles
 router.post('/metrics/marketplace/collectibles/search', getMarketPlaceDataBySearch)
@@ -81,28 +81,28 @@ router.post('/metrics/marketplace/my-collectibles/search', getMarketPlaceDataByS
 router.post('/metrics/marketplace/collectibles/loosers', getMarketPlaceDataByLosers)
 
 // Get secondary marketplace data for single (collectible)
-router.get('/metrics/marketplace/collectible/:slug', getSingleMarketCollectibleData)
+router.get('/metrics/marketplace/collectible/:slug', cache('61 minutes'), getSingleMarketCollectibleData)
 
 // Get floor price by id
-router.get('/metrics/marketplace/collectible/:slug/current-floor-price', getFloorPriceById)
+router.get('/metrics/marketplace/collectible/:slug/current-floor-price', cache('61 minutes'), getFloorPriceById)
 
 // Get percentage change summary for collectible
 router.get('/metrics/marketplace/collectible/:slug/percentages', getCollectibleChangeSummary)
 
 // Get secondary marketplace historical sale data (collectible)
-router.get('/metrics/marketplace/collectible/history/:slug', getMarketPriceHistoricData)
+router.get('/metrics/marketplace/collectible/history/:slug', cache('61 minutes'), getMarketPriceHistoricData)
 
-router.get('/metrics/marketplace/collectible/history/:slug/all', getAllMarketPriceHistoricData)
+router.get('/metrics/marketplace/collectible/history/:slug/all', cache('61 minutes'), getAllMarketPriceHistoricData)
 
 // Get secondary marketplace data for comics
-router.get('/metrics/marketplace/comics',cache('61 minutes'), getMarketplaceComicData)
+router.get('/metrics/marketplace/comics', cache('61 minutes'), getMarketplaceComicData)
 
 router.post('/metrics/marketplace/comics/search', getMarketPlaceComicDataBySearch)
 
 // Get secondary marketplace historical sale data (comic)
 router.get('/metrics/marketplace/comic/history/:slug', cache('61 minutes'), getMarketPriceComicHistoricData)
 
-router.get('/metrics/marketplace/comic/history/:slug/all', getAllMarketComicPriceHistoricData)
+router.get('/metrics/marketplace/comic/history/:slug/all', cache('61 minutes'), getAllMarketComicPriceHistoricData)
 
 // Get collectibles valuation
 router.post('/metrics/account/collectibles/valuation', getCollectiblesValuation)

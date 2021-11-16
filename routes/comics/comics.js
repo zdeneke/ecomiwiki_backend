@@ -4,8 +4,8 @@ const { create, list, read, remove, update, listRelated, listSearch } = require(
 const { requireSignin, adminMiddleware } = require('../../controllers/auth/auth')
 
 // router.post('/comic', requireSignin, adminMiddleware, create)
-router.post('/comics', list)
-router.get('/comic/:slug', read)
+router.post('/comics', cache('61 minutes'), list)
+router.get('/comic/:slug', cache('61 minutes'), read)
 router.delete('/comic/:slug', requireSignin, adminMiddleware, remove)
 router.put('/comic/:slug', requireSignin, adminMiddleware, update)
 // router.get('/comic/photo/:slug', photo)
