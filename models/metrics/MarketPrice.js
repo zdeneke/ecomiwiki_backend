@@ -76,4 +76,6 @@ const MarketPrice = new mongoose.Schema({
     }
 }, { timestamps: true })
 
+MarketPrice.index({ name: 'text' })
+
 module.exports = mongoose.model('MarketPrice', MarketPrice, 'marketprices')

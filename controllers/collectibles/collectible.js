@@ -93,7 +93,6 @@ exports.list = (req,res) => {
         .sort({ dropDate: -1 })
         .skip(offset)
         .limit(limit)
-        .select('_id name slug brand dropDate rarity image storePrice totalIssued revenue editionType totalAvailable createdAt updatedAt')
         .exec((err, data) => {
             if (err){
                 return res.status(400).json({
@@ -198,22 +197,16 @@ exports.update = (req,res) => {
 exports.listBySearch = (req, res) => {
     let order = req.body.order ? req.body.order : "desc";
     let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
-    let limit = req.body.limit ? parseInt(req.body.limit) : 100;
-    let offset = parseInt(req.body.offset);
-    let findArgs = {};
+    let limit = req.body.limit ? parseInt(req.body.limit) : 15
+    let offset = req.body.offset ? parseInt(req.body.offset) : 0
+    let findArgs = {}
 
-    for (let key in req.body.filters) {
-        if (req.body.filters[key].length > 0) {
-            if (key === "price") {
-                // gte -  greater than price [0-10]
-                // lte - less than
-                findArgs[key] = {
-                    $gte: req.body.filters[key][0],
-                    $lte: req.body.filters[key][1]
-                };
-            } else {
-                findArgs[key] = req.body.filters[key];
-            }
+    if (req.body.filters.name && req.body.filters.name.length > 0){
+        findArgs = {
+            "$or": [
+                { "name": { '$regex': req.body.filters.name, '$options': 'i' } },
+                { "brand.name": { '$regex': req.body.filters.name, '$options': 'i' } }
+            ]
         }
     }
 
@@ -233,6 +226,7 @@ exports.listBySearch = (req, res) => {
             });
         });
 };
+
 
 
 // exports.photo = (req,res) => {

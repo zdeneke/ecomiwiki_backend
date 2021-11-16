@@ -80,3 +80,19 @@ exports.remove = (req,res) => {
             })
         })
 }
+
+exports.getBrandPhoto = (req,res) => {
+    const slug = req.params.slug
+
+    Brand.findById(slug)
+        .select('squareImage')
+        .exec((err, data) => {
+            if (err){
+                res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            res.json(data)
+        })
+
+}

@@ -31,9 +31,6 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     salt: String,
-    about: {
-        type: String
-    },
     role: {
         type: Number,
         default: 0
@@ -49,7 +46,10 @@ const userSchema = new mongoose.Schema({
     userCollection: {
         type: Array,
         default: []
-    }
+    },
+    valuation: {
+        type: Number
+    },
 }, { timestamps: true })
 
 // Virtual field

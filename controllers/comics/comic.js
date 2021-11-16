@@ -1,4 +1,5 @@
 const Comic = require('../../models/comics/comic')
+const ComicPrice = require('../../models/metrics/ComicPrice')
 const formidable = require('formidable')
 const slugify = require('slugify')
 const stripHtml = require('string-strip-html')
@@ -89,8 +90,6 @@ exports.list = (req,res) => {
     let limit = req.body.limit ? parseInt(req.body.limit) : 10
     let offset = req.body.offset ? parseInt(req.body.offset) : 0
 
-    console.log('req body limit is: ', req.body)
-
     Comic.find({})
         .sort({ dropDate: -1 })
         .skip(offset)
@@ -111,13 +110,14 @@ exports.list = (req,res) => {
 exports.read = (req,res) => {
     const slug = req.params.slug.toLowerCase()
 
-    Comic.findOne({ slug })
+    ComicPrice.findOne({ "uniqueCoverId": slug })
         .exec((err, data) => {
             if (err){
                 return res.status(400).json({
                     error: errorHandler(err)
                 })
             }
+            console.log('Comic data is: ', data)
             res.json(data)
         })
 }

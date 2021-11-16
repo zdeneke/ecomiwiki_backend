@@ -26,6 +26,7 @@ const metricRoutes = require('./routes/metrics/index')
 const storeRoutes = require('./routes/ecomi-api/store')
 const socialRoutes = require('./routes/social/social')
 const tracerRoutes = require('./routes/tracer/tracer')
+const seriesRoutes = require('./routes/series/series')
 
 // Ecomi/VEVE API Routes
 const ecomiMarketplaceAPI = require('./routes/ecomi-api/marketplace')
@@ -49,7 +50,19 @@ app.use(bodyParser.json())
 app.use(cookieParser())
 
 // Cors
-app.use(cors())
+const whitelist = ['http://localhost:3000', 'https://ecomiwiki.com'];
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (whitelist.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+}
+app.use(cors(corsOptions))
+app.disable('etag');
+
 
 // Routes Middleware
 app.use('/api', blogRoutes)
@@ -68,6 +81,7 @@ app.use('/api', ecomiUserAPI)
 app.use('/api', storeRoutes)
 app.use('/api', socialRoutes)
 app.use('/api', tracerRoutes)
+app.use('/api', seriesRoutes)
 
 // Port
 const port = process.env.PORT || 8000

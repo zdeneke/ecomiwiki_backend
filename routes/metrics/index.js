@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const apicache = require('apicache')
+const { requireSignin } = require('../../controllers/auth/auth')
 
 const {
     getOmiMetrics,
@@ -21,7 +22,14 @@ const {
     getComicsValuation,
     getMarketPriceComicHistoricData,
     getSingleMarketCollectibleData,
-    getCollectibleChangeSummary
+    getCollectibleChangeSummary,
+    getAllMarketPriceHistoricData,
+    getMarketPlaceDataBySearch,
+    getMarketPlaceDataByLosers,
+    getMarketPlaceDataBySearchMyCollectibles,
+    getFloorPriceById,
+    getMarketPlaceComicDataBySearch,
+    getAllMarketComicPriceHistoricData
 } = require('../../controllers/metrics/index')
 
 // Init cache
@@ -63,20 +71,38 @@ router.get('/metrics/collectibles', cache('61 minutes'), getCollectibleRevenueDa
 // Get secondary marketplace data for collectibles
 router.post('/metrics/marketplace/collectibles', getMarketplaceData)
 
+// Search secondary marketplace data collectibles
+router.post('/metrics/marketplace/collectibles/search', getMarketPlaceDataBySearch)
+
+// Search secondary marketplace data for users collectibles
+router.post('/metrics/marketplace/my-collectibles/search', getMarketPlaceDataBySearchMyCollectibles)
+
+// Biggest losers in the marketplace
+router.post('/metrics/marketplace/collectibles/loosers', getMarketPlaceDataByLosers)
+
 // Get secondary marketplace data for single (collectible)
 router.get('/metrics/marketplace/collectible/:slug', getSingleMarketCollectibleData)
+
+// Get floor price by id
+router.get('/metrics/marketplace/collectible/:slug/current-floor-price', getFloorPriceById)
 
 // Get percentage change summary for collectible
 router.get('/metrics/marketplace/collectible/:slug/percentages', getCollectibleChangeSummary)
 
 // Get secondary marketplace historical sale data (collectible)
-router.get('/metrics/marketplace/collectible/history/:slug', cache('61 minutes'), getMarketPriceHistoricData)
+router.get('/metrics/marketplace/collectible/history/:slug', getMarketPriceHistoricData)
+
+router.get('/metrics/marketplace/collectible/history/:slug/all', getAllMarketPriceHistoricData)
 
 // Get secondary marketplace data for comics
 router.get('/metrics/marketplace/comics',cache('61 minutes'), getMarketplaceComicData)
 
+router.post('/metrics/marketplace/comics/search', getMarketPlaceComicDataBySearch)
+
 // Get secondary marketplace historical sale data (comic)
 router.get('/metrics/marketplace/comic/history/:slug', cache('61 minutes'), getMarketPriceComicHistoricData)
+
+router.get('/metrics/marketplace/comic/history/:slug/all', getAllMarketComicPriceHistoricData)
 
 // Get collectibles valuation
 router.post('/metrics/account/collectibles/valuation', getCollectiblesValuation)

@@ -14,6 +14,7 @@ const { getPercentageChangeNumberOnly } = require('../../helpers/index')
 
 exports.getMarketPriceHistoricData = (req,res) => {
     const slug = req.params.slug
+    console.log('Slug is: ', slug)
 
     MarketPriceHistoric.aggregate([
         {
@@ -49,21 +50,162 @@ exports.getMarketPriceHistoricData = (req,res) => {
         res.json(data)
     })
 
-    // MarketPriceHistoric.findOne({
-    //     collectibleId: slug,
-    //     history: {
-    //         date: {
-    //             $lte: new Date("2021-10-18T00:00:00.000Z")
-    //         }
-    //     }
-    // }).exec((err, data) => {
-    //     if (err){
-    //         return res.status(400).json({
-    //             error: errorHandler(err)
-    //         })
-    //     }
-    //     res.json(data)
-    // })
+}
+
+exports.getAllMarketPriceHistoricData = (req,res) => {
+    const slug = req.params.slug
+
+    MarketPriceHistoric.find({ collectibleId: slug}).exec((err, data) => {
+        if (err){
+            return res.status(400).json({
+                error: errorHandler(err)
+            })
+        }
+        res.json(data)
+    })
+}
+
+exports.getAllMarketComicPriceHistoricData = (req,res) => {
+    const slug = req.params.slug
+
+    MarketComicPriceHistoric.find({ uniqueCoverId: slug}).exec((err, data) => {
+        if (err){
+            return res.status(400).json({
+                error: errorHandler(err)
+            })
+        }
+        res.json(data)
+    })
+
+}
+
+// TODO: Implement fetch by biggers losers
+exports.getMarketPlaceDataByLosers = (req,res) => {
+    let limit = req.body.limit ? parseInt(req.body.limit) : 15
+    let offset = req.body.offset ? parseInt(req.body.offset) : 0
+    MarketPrice.find()
+        .sort({ createdAt: -1 })
+        .populate('history')
+        .skip(offset)
+        .limit(limit)
+        .exec((err, data) => {
+            if (err){
+                return res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            res.json({
+                size: data.length,
+                data
+            })
+        })
+}
+
+exports.getMarketPlaceComicDataBySearch = (req,res) => {
+    let order = req.body.order ? req.body.order : "desc";
+    let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
+    let limit = req.body.limit ? parseInt(req.body.limit) : 15
+    let offset = req.body.offset ? parseInt(req.body.offset) : 0
+    let findArgs = {}
+    if (req.body.filters.name && req.body.filters.name.length > 0){
+        findArgs = {
+            "$or": [
+                { "name": { '$regex': req.body.filters.name, '$options': 'i' } },
+                { "brand.name": { '$regex': req.body.filters.name, '$options': 'i' } }
+            ]
+        }
+    }
+
+    ComicPrice.find(findArgs)
+        .sort([[sortBy, order]])
+        .skip(offset)
+        .limit(limit)
+        .exec((err, data) => {
+            if (err) {
+                console.log('Error is: ', err)
+                return res.status(400).json({
+                    error: "Comics not found"
+                });
+            }
+            res.json({
+                size: data.length,
+                data
+            });
+        });
+}
+
+exports.getMarketPlaceDataBySearch = (req,res) => {
+    let order = req.body.order ? req.body.order : "desc";
+    let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
+    let limit = req.body.limit ? parseInt(req.body.limit) : 15
+    let offset = req.body.offset ? parseInt(req.body.offset) : 0
+    let findArgs = {}
+    if (req.body.filters.name && req.body.filters.name.length > 0){
+        findArgs = {
+            "$or": [
+                { "name": { '$regex': req.body.filters.name, '$options': 'i' } },
+                { "brand.name": { '$regex': req.body.filters.name, '$options': 'i' } }
+            ]
+        }
+    }
+
+    MarketPrice.find(findArgs)
+        .sort([[sortBy, order]])
+        .skip(offset)
+        .limit(limit)
+        .exec((err, data) => {
+            if (err) {
+                console.log('Error is: ', err)
+                return res.status(400).json({
+                    error: "Collectibles not found"
+                });
+            }
+            res.json({
+                size: data.length,
+                data
+            });
+        });
+    }
+
+exports.getMarketPlaceDataBySearchMyCollectibles = (req,res) => {
+    let ids = req.body.ids ? req.body.ids : null
+    let order = req.body.order ? req.body.order : "desc"
+    let sortBy = req.body.sortBy ? req.body.sortBy : "_id"
+    let limit = req.body.limit ? parseInt(req.body.limit) : 15
+    let offset = req.body.offset ? parseInt(req.body.offset) : 0
+    let findArgs = {}
+    if (req.body.filters.name && req.body.filters.name.length > 0){
+        findArgs = {
+            "$or": [
+                { "name": { '$regex': req.body.filters.name, '$options': 'i' } },
+                { "brand.name": { '$regex': req.body.filters.name, '$options': 'i' } },
+                { "collectibleId" : {"$in": ids } }
+            ]
+        }
+    } else {
+        findArgs = {
+            "$or": [
+                { "collectibleId" : {"$in": ids } }
+            ]
+        }
+    }
+
+    MarketPrice.find(findArgs)
+        .sort([[sortBy, order]])
+        .skip(offset)
+        .limit(limit)
+        .exec((err, data) => {
+            if (err) {
+                console.log('Error is: ', err)
+                return res.status(400).json({
+                    error: "Collectibles not found"
+                });
+            }
+            res.json({
+                size: data.length,
+                data
+            });
+        });
 }
 
 exports.getMarketplaceData = (req,res) => {
@@ -100,7 +242,21 @@ exports.getSingleMarketCollectibleData = (req,res) => {
         }
         res.json(data)
     })
+}
 
+exports.getFloorPriceById = (req,res) => {
+    const slug = req.params.slug
+
+    MarketPrice.find({ collectibleId: slug})
+        .select('metrics updatedAt totalListings issueNumber')
+        .exec((err, data) => {
+            if (err){
+                return res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            res.json(data)
+        })
 }
 
 exports.getCollectibleChangeSummary = (req,res) => {
@@ -114,9 +270,11 @@ exports.getCollectibleChangeSummary = (req,res) => {
             }
             const currentPrice = data[0].history[0] ? data[0].history[0].value : 0
             const calcThis = (endDay) => {
-                return (currentPrice - endDay) / endDay * 100
+                return endDay
             }
             const results = {
+                "docid": data[0]._id,
+                "collectibleId": data[0].collectibleId,
                 "currentPrice": currentPrice,
                 "one_day_change": data[0].history[23] ? calcThis(data[0].history[23].value) : null,
                 "one_week_change": data[0].history[161] ? calcThis(data[0].history[161].value) : null,
@@ -398,8 +556,8 @@ exports.getCollectiblesValuation = (req,res) => {
                 retailPrice += value.storePrice * pluckIt[0].quantity
             })
             res.json({
-                valuation,
-                retailPrice
+                valuation: valuation.toFixed(2),
+                retailPrice: retailPrice.toFixed(2)
             })
         })
 }
