@@ -16,10 +16,12 @@ exports.signup = (req,res) => {
             let username = shortId.generate()
             let profile = `${process.env.CLIENT_URL}/profile/${username}`
 
-            let newUser = new User({ email, password, profile })
+            let newUser = new User({ email, password, username, profile })
 
             newUser.save((err, success) => {
+                console.log('ok saving...')
                 if (err){
+                    console.log('ok error...', err)
                     return res.status(400).json({
                         error: err
                     })
