@@ -261,7 +261,7 @@ exports.getFloorPriceById = (req,res) => {
 
 exports.getCollectibleChangeSummary = (req,res) => {
     const slug = req.params.slug
-    MarketPriceHistoric.find({ collectibleId: slug})
+    MarketPriceHistoric.find({ collectibleId: slug })
         .exec((err, data) => {
             if (err){
                 return res.status(400).json({

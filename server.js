@@ -60,7 +60,7 @@ const corsOptions = {
         }
     },
 }
-app.use(cors(corsOptions))
+app.use(cors())
 app.disable('etag');
 
 
