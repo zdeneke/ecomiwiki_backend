@@ -57,7 +57,6 @@ exports.getUserCollectibles = (req,res) => {
                     error: 'Unable to fetch users collectibles.'
                 })
             }
-            console.log('user collection data is: ', data)
             res.json({
                 "collectibles": data.userCollection
             })
