@@ -1,7 +1,10 @@
 const express = require('express')
 const router = express.Router()
+const apicache = require('apicache')
 const { create, list, read, remove, update, listRelated, listSearch } = require('../../controllers/comics/comic')
 const { requireSignin, adminMiddleware } = require('../../controllers/auth/auth')
+
+let cache = apicache.middleware
 
 // router.post('/comic', requireSignin, adminMiddleware, create)
 router.post('/comics', cache('61 minutes'), list)
