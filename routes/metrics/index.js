@@ -36,7 +36,7 @@ const {
 let cache = apicache.middleware
 
 // Get OMI metrics
-router.get('/metrics/omi', getOmiMetrics)
+router.get('/metrics/omi', cache('5 minutes'), getOmiMetrics)
 
 // Get OMI burn history
 router.get('/metrics/burns', getOmiBurn)
@@ -78,7 +78,7 @@ router.post('/metrics/marketplace/collectibles/search', getMarketPlaceDataBySear
 router.post('/metrics/marketplace/my-collectibles/search', getMarketPlaceDataBySearchMyCollectibles)
 
 // Biggest losers in the marketplace
-router.post('/metrics/marketplace/collectibles/loosers', getMarketPlaceDataByLosers)
+// router.post('/metrics/marketplace/collectibles/loosers', getMarketPlaceDataByLosers)
 
 // Get secondary marketplace data for single (collectible)
 router.get('/metrics/marketplace/collectible/:slug', cache('61 minutes'), getSingleMarketCollectibleData)
