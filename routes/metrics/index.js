@@ -87,7 +87,7 @@ router.get('/metrics/marketplace/collectible/:slug', cache('61 minutes'), getSin
 router.get('/metrics/marketplace/collectible/:slug/current-floor-price', cache('61 minutes'), getFloorPriceById)
 
 // Get percentage change summary for collectible
-router.get('/metrics/marketplace/collectible/:slug/percentages', getCollectibleChangeSummary)
+router.get('/metrics/marketplace/collectible/:slug/percentages', cache('61 minutes'), getCollectibleChangeSummary)
 
 // Get secondary marketplace historical sale data (collectible)
 router.get('/metrics/marketplace/collectible/history/:slug', cache('61 minutes'), getMarketPriceHistoricData)
