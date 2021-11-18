@@ -18,10 +18,6 @@ const brandRoutes = require('./routes/brand/brand')
 const metricRoutes = require('./routes/metrics/index')
 const seriesRoutes = require('./routes/series/series')
 
-// Ecomi/VEVE API Routes
-const ecomiMarketplaceAPI = require('./routes/ecomi-api/marketplace')
-const ecomiUserAPI = require('./routes/ecomi-api/user')
-
 // App
 const app = express()
 
@@ -61,8 +57,6 @@ app.use('/api', comicRoutes)
 app.use('/api', licenseRoutes)
 app.use('/api', brandRoutes)
 app.use('/api', metricRoutes)
-app.use('/api', ecomiMarketplaceAPI)
-app.use('/api', ecomiUserAPI)
 app.use('/api', seriesRoutes)
 
 // Port

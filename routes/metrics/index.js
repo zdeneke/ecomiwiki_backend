@@ -25,11 +25,11 @@ const {
     getCollectibleChangeSummary,
     getAllMarketPriceHistoricData,
     getMarketPlaceDataBySearch,
-    getMarketPlaceDataByLosers,
     getMarketPlaceDataBySearchMyCollectibles,
     getFloorPriceById,
     getMarketPlaceComicDataBySearch,
-    getAllMarketComicPriceHistoricData
+    getAllMarketComicPriceHistoricData,
+    getSingleMarketCollectibleStatistics
 } = require('../../controllers/metrics/index')
 
 // Init cache
@@ -83,6 +83,9 @@ router.post('/metrics/marketplace/my-collectibles/search', getMarketPlaceDataByS
 // Get secondary marketplace data for single (collectible)
 router.get('/metrics/marketplace/collectible/:slug', cache('61 minutes'), getSingleMarketCollectibleData)
 
+// Get secondary marketplace data for single (collectible)
+router.get('/metrics/marketplace/collectible/:slug/statistics', cache('61 minutes'), getSingleMarketCollectibleStatistics)
+
 // Get floor price by id
 router.get('/metrics/marketplace/collectible/:slug/current-floor-price', cache('61 minutes'), getFloorPriceById)
 
@@ -97,7 +100,7 @@ router.get('/metrics/marketplace/collectible/history/:slug/all', cache('61 minut
 // Get secondary marketplace data for comics
 router.get('/metrics/marketplace/comics', cache('61 minutes'), getMarketplaceComicData)
 
-router.post('/metrics/marketplace/comics/search', getMarketPlaceComicDataBySearch)
+router.post('/metrics/marketplace/comics/search', cache('61 minutes'), getMarketPlaceComicDataBySearch)
 
 // Get secondary marketplace historical sale data (comic)
 router.get('/metrics/marketplace/comic/history/:slug', cache('61 minutes'), getMarketPriceComicHistoricData)

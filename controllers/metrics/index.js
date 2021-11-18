@@ -244,6 +244,21 @@ exports.getSingleMarketCollectibleData = (req,res) => {
     })
 }
 
+exports.getSingleMarketCollectibleStatistics = (req,res) => {
+
+    const slug = req.params.slug
+
+    MarketPrice.find({ collectibleId: slug })
+        .exec((err, data) => {
+        if (err){
+            return res.status(400).json({
+                error: errorHandler(err)
+            })
+        }
+        res.json(data)
+    })
+}
+
 exports.getFloorPriceById = (req,res) => {
     const slug = req.params.slug
 
@@ -536,6 +551,7 @@ exports.getCollectiblesValuation = (req,res) => {
 
     const usersCollectibles = req.body.collectibles
     let collectiblesArr = []
+    if (usersCollectibles <= 0){ return res.json({})}
     usersCollectibles.map(collectible => {
         collectiblesArr.push(collectible.collectibleId)
     })
