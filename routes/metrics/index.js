@@ -108,9 +108,9 @@ router.get('/metrics/marketplace/comic/history/:slug', cache('61 minutes'), getM
 router.get('/metrics/marketplace/comic/history/:slug/all', cache('61 minutes'), getAllMarketComicPriceHistoricData)
 
 // Get collectibles valuation
-router.post('/metrics/account/collectibles/valuation', getCollectiblesValuation)
+// router.post('/metrics/account/collectibles/valuation', cache('61 minutes'), getCollectiblesValuation)
 
 // Get comics valuation
-router.post('/metrics/account/comics/valuation', getComicsValuation)
+// router.post('/metrics/account/comics/valuation', cache('61 minutes'), getComicsValuation)
 
 module.exports = router

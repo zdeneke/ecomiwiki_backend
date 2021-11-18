@@ -22,6 +22,8 @@ exports.updateMyCollection = (req,res) => {
                     error: 'Something went adding the collectibles.'
                 })
             }
+            user.hashed_password = undefined;
+            user.salt = undefined;
             res.json(user)
         }
     )
