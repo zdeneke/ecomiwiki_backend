@@ -29,6 +29,7 @@ const {
     getFloorPriceById,
     getMarketPlaceComicDataBySearch,
     getAllMarketComicPriceHistoricData,
+    getMarketPlaceDataByLosers,
     getSingleMarketCollectibleStatistics
 } = require('../../controllers/metrics/index')
 
@@ -78,7 +79,7 @@ router.post('/metrics/marketplace/collectibles/search', getMarketPlaceDataBySear
 router.post('/metrics/marketplace/my-collectibles/search', getMarketPlaceDataBySearchMyCollectibles)
 
 // Biggest losers in the marketplace
-// router.post('/metrics/marketplace/collectibles/loosers', getMarketPlaceDataByLosers)
+router.get('/metrics/marketplace/collectibles/losers', getMarketPlaceDataByLosers)
 
 // Get secondary marketplace data for single (collectible)
 router.get('/metrics/marketplace/collectible/:slug', cache('61 minutes'), getSingleMarketCollectibleData)
@@ -100,7 +101,7 @@ router.get('/metrics/marketplace/collectible/history/:slug/all', cache('61 minut
 // Get secondary marketplace data for comics
 router.get('/metrics/marketplace/comics', cache('61 minutes'), getMarketplaceComicData)
 
-router.post('/metrics/marketplace/comics/search', cache('61 minutes'), getMarketPlaceComicDataBySearch)
+router.post('/metrics/marketplace/comics/search', getMarketPlaceComicDataBySearch)
 
 // Get secondary marketplace historical sale data (comic)
 router.get('/metrics/marketplace/comic/history/:slug', cache('61 minutes'), getMarketPriceComicHistoricData)
