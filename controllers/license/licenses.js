@@ -72,3 +72,24 @@ exports.remove = (req,res) => {
             })
         })
 }
+
+exports.getLatestLicenses = (req,res) => {
+    let limit = req.body.limit ? parseInt(req.body.limit) : 10
+    let offset = req.body.offset ? parseInt(req.body.offset) : 0
+
+    License.find({})
+        .sort({ createdAt: -1 })
+        .skip(offset)
+        .limit(limit)
+        .exec((err, data) => {
+            if (err){
+                return res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            res.json({
+                size: data.length,
+                data
+            })
+        })
+}

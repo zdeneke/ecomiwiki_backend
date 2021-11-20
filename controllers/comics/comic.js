@@ -193,6 +193,27 @@ exports.update = (req,res) => {
 
 }
 
+exports.getLatestComics = (req,res) => {
+    let limit = req.body.limit ? parseInt(req.body.limit) : 10
+    let offset = req.body.offset ? parseInt(req.body.offset) : 0
+
+    Comic.find({})
+        .sort({ createdAt: -1 })
+        .skip(offset)
+        .limit(limit)
+        .exec((err, data) => {
+        if (err){
+            return res.status(400).json({
+                error: errorHandler(err)
+            })
+        }
+        res.json({
+            size: data.length,
+            data
+        })
+    })
+}
+
 // exports.photo = (req,res) => {
 //     const slug = req.params.slug.toLowerCase()
 //

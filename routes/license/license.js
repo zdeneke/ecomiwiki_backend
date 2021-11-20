@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { create, list, read, remove } = require('../../controllers/license/licenses')
+const { create, list, read, remove, getLatestLicenses } = require('../../controllers/license/licenses')
 const { requireSignin, adminMiddleware } = require('../../controllers/auth/auth')
 
 // Validators
@@ -15,6 +15,8 @@ router.get('/licenses', list)
 
 // Read
 router.get('/license/:slug', read)
+
+router.post('/license/latest', getLatestLicenses)
 
 // Delete
 router.delete('/license/:slug', requireSignin, adminMiddleware, remove)

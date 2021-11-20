@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { create, list, read, remove, getBrandPhoto } = require('../../controllers/brands/brands')
+const { create, list, read, remove, getBrandPhoto, getLatestBrands } = require('../../controllers/brands/brands')
 const { requireSignin, adminMiddleware } = require('../../controllers/auth/auth')
 
 // Validators
@@ -21,5 +21,8 @@ router.delete('/brand/:slug', requireSignin, adminMiddleware, remove)
 
 // Get Brand Photo
 router.get('/brand/photo/:slug', getBrandPhoto)
+
+// Get Latest Brand
+router.post("/brands/latest", getLatestBrands)
 
 module.exports = router
