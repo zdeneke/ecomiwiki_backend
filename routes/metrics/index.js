@@ -80,10 +80,10 @@ router.post('/metrics/marketplace/collectibles/search', getMarketPlaceDataBySear
 router.post('/metrics/marketplace/my-collectibles/search', getMarketPlaceDataBySearchMyCollectibles)
 
 // Biggest losers in the marketplace
-router.post('/metrics/marketplace/collectibles/losers', cache('61 minutes'), getMarketPlaceDataByLosers)
+router.post('/metrics/marketplace/collectibles/losers', getMarketPlaceDataByLosers)
 
 // Biggest gainers in the marketplace
-router.post('/metrics/marketplace/collectibles/gainers', cache('61 minutes'), getMarketPlaceDataByGainers)
+router.post('/metrics/marketplace/collectibles/gainers', getMarketPlaceDataByGainers)
 
 // Get secondary marketplace data for single (collectible)
 router.get('/metrics/marketplace/collectible/:slug', cache('61 minutes'), getSingleMarketCollectibleData)
