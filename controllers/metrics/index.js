@@ -14,7 +14,6 @@ const { getPercentageChangeNumberOnly } = require('../../helpers/index')
 
 exports.getMarketPriceHistoricData = (req,res) => {
     const slug = req.params.slug
-    console.log('Slug is: ', slug)
 
     MarketPriceHistoric.aggregate([
         {
@@ -49,7 +48,6 @@ exports.getMarketPriceHistoricData = (req,res) => {
         }
         res.json(data)
     })
-
 }
 
 exports.getAllMarketPriceHistoricData = (req,res) => {
@@ -83,9 +81,28 @@ exports.getAllMarketComicPriceHistoricData = (req,res) => {
 exports.getMarketPlaceDataByLosers = (req,res) => {
     let limit = req.body.limit ? parseInt(req.body.limit) : 15
     let offset = req.body.offset ? parseInt(req.body.offset) : 0
-    MarketPrice.find()
-        .sort({ createdAt: -1 })
-        .populate('history')
+    MarketPrice.find( {"metrics.one_day_change":{ "$exists": true }} )
+        .sort({ "metrics.one_day_change": 1 })
+        .skip(offset)
+        .limit(limit)
+        .exec((err, data) => {
+            if (err){
+                return res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            res.json({
+                size: data.length,
+                data
+            })
+        })
+}
+
+exports.getMarketPlaceDataByGainers = (req,res) => {
+    let limit = req.body.limit ? parseInt(req.body.limit) : 15
+    let offset = req.body.offset ? parseInt(req.body.offset) : 0
+    MarketPrice.find( {"metrics.one_day_change":{ "$exists": true }} )
+        .sort({ "metrics.one_day_change": -1 })
         .skip(offset)
         .limit(limit)
         .exec((err, data) => {
