@@ -36,17 +36,12 @@ app.use(bodyParser.json())
 app.use(cookieParser())
 
 // Cors
-const whitelist = ['http://localhost:3000', 'http://ecomiwiki.com' , 'https://ecomiwiki.com', ['67.225.248.251']];
 const corsOptions = {
-    origin: function (origin, callback) {
-        if (whitelist.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: 'https://ecomiwiki.com',
+    optionsSuccessStatus: 200
 }
-app.use(cors())
+
+app.use(cors(corsOptions))
 app.disable('etag');
 
 // Routes Middleware
