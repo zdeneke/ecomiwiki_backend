@@ -61,12 +61,6 @@ router.get('/metrics/veve', getVeveMetrics)
 // Get veve user growth data
 router.get('/metrics/user/growth', getUserGrowthData)
 
-router.get('/metrics/test', requireSignin, authMiddleware, (req,res) => {
-    res.json({
-        'msg': 'here is data.'
-    })
-})
-
 // Get brand revenue data
 router.get('/metrics/brands', requireSignin, authMiddleware, cache('60 minutes'), getBrandRevenueData)
 
