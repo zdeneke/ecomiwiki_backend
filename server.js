@@ -30,6 +30,15 @@ mongoose.connect(process.env.DATABASE, { useNewUrlParser: true, useCreateIndex: 
 scheduledOmiUpdater()
 scheduledBurnUpdater()
 
+// CSP
+app.use(function (req, res, next) {
+    res.setHeader(
+        'Content-Security-Policy-Report-Only',
+        "default-src 'self'; font-src 'self'; img-src 'self'; script-src 'self'; style-src 'self'; frame-src 'self'"
+    );
+    next();
+});
+
 // Middlewares
 app.use(morgan('dev'))
 app.use(bodyParser.json())
@@ -41,7 +50,7 @@ const corsOptions = {
     optionsSuccessStatus: 200
 }
 
-app.use(cors(corsOptions))
+app.use(cors())
 app.disable('etag');
 
 // Routes Middleware
