@@ -50,10 +50,10 @@ const corsOptions = {
     optionsSuccessStatus: 200
 }
 
-app.enable('trust proxy')
-app.use((req, res, next) => {
-    req.secure ? next() : res.redirect('https://' + req.headers.host + req.url)
-})
+// app.enable('trust proxy')
+// app.use((req, res, next) => {
+//     req.secure ? next() : res.redirect('https://' + req.headers.host + req.url)
+// })
 
 app.use(cors(corsOptions))
 app.disable('etag');
