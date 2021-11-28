@@ -55,7 +55,7 @@ const corsOptions = {
 //     req.secure ? next() : res.redirect('https://' + req.headers.host + req.url)
 // })
 
-app.use(cors(corsOptions))
+app.use(cors())
 app.disable('etag');
 
 // Routes Middleware

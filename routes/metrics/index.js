@@ -113,9 +113,9 @@ router.get('/metrics/marketplace/comic/history/:slug', requireSignin, authMiddle
 router.get('/metrics/marketplace/comic/history/:slug/all', requireSignin, authMiddleware, cache('61 minutes'), getAllMarketComicPriceHistoricData)
 
 // Get collectibles valuation
-// router.post('/metrics/account/collectibles/valuation', cache('61 minutes'), getCollectiblesValuation)
+router.post('/metrics/account/collectibless/valuation', requireSignin, authMiddleware, getCollectiblesValuation)
 
 // Get comics valuation
-// router.post('/metrics/account/comics/valuation', cache('61 minutes'), getComicsValuation)
+router.post('/metrics/account/comicss/valuation', requireSignin, authMiddleware, getComicsValuation)
 
 module.exports = router
