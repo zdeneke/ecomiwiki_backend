@@ -123,6 +123,24 @@ exports.read = (req,res) => {
         })
 }
 
+
+exports.getCollectibleBySlug = (req,res) => {
+    const slug = req.params.slug.toLowerCase()
+
+    Collectible.findOne({ slug })
+        .populate('brand', '_id name, slug')
+        .populate('license', '_id name, slug')
+        .populate('author', '_id name username')
+        .exec((err, data) => {
+            if (err){
+                return res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            res.json(data)
+        })
+}
+
 exports.remove = (req,res) => {
     const slug = req.params.slug.toLowerCase()
     Collectible.findOneAndRemove({ slug })

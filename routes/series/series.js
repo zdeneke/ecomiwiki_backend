@@ -7,7 +7,7 @@ let cache = apicache.middleware
 
 const { collectibleSerieslist, comicSerieslist } = require('../../controllers/series/series')
 
-router.get('/collectible/series/:slug', cache('1 day'), collectibleSerieslist)
+router.get('/collectible/seriesx/:slug', cache('1 day'), collectibleSerieslist)
 
 router.get('/comic/series/:slug', cache('1 day'), comicSerieslist)
 

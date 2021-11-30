@@ -7,7 +7,7 @@ exports.collectibleSerieslist = (req,res) => {
 
     Collectible.find({ 'series.id': seriesId })
         .sort({ dropDate: -1 })
-        .select('series.name name rarity image dropDate')
+        .select('series.name slug storePrice brand name rarity image dropDate licensor.name')
         .exec((err, data) => {
             if (err){
                 return res.status(400).json({

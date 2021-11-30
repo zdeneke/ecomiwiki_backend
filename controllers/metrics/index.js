@@ -50,6 +50,44 @@ exports.getMarketPriceHistoricData = (req,res) => {
     })
 }
 
+exports.getMarketPriceHistoricData48 = (req,res) => {
+    const slug = req.params.slug
+
+    MarketPriceHistoric.aggregate([
+        {
+            "$match": {
+                collectibleId: slug,
+                "history.date": {
+                    $gte: new Date(new Date().getTime() - (48 * 60 * 60 * 1000))
+                }
+            }
+        },
+        {
+            "$set": {
+                "history": {
+                    "$filter": {
+                        "input": "$history",
+                        "as": "h",
+                        "cond": {
+                            $gte: [
+                                "$$h.date",
+                                new Date(new Date().getTime() - (48 * 60 * 60 * 1000))
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    ]).exec((err, data) => {
+        if (err){
+            return res.status(400).json({
+                error: errorHandler(err)
+            })
+        }
+        res.json(data)
+    })
+}
+
 exports.getAllMarketPriceHistoricData = (req,res) => {
     const slug = req.params.slug
 
