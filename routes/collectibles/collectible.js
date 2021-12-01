@@ -7,11 +7,10 @@ const {
     read,
     remove,
     update,
-    listRelated,
-    listSearch,
     listBySearch,
     getLatestCollectibles,
-    getCollectibleBySlug
+    getCollectibleBySlug,
+    listAllCollectibles
 } = require('../../controllers/collectibles/collectible')
 const { requireSignin, adminMiddleware } = require('../../controllers/auth/auth')
 
@@ -29,5 +28,7 @@ router.post("/collectibles/latest", getLatestCollectibles)
 // router.get('/collectible/photo/:slug', photo)
 // router.post('/collectibles/related', listRelated)
 // router.get('/collectibles/search', listSearch)
+
+router.get('/seo/collectibles', listAllCollectibles)
 
 module.exports = router

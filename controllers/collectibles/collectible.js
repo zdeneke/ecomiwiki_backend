@@ -85,6 +85,21 @@ exports.create = (req,res) => {
     })
 }
 
+exports.listAllCollectibles = (req,res) => {
+    Collectible.find({})
+        .exec((err, data) => {
+            if (err){
+                return res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            res.json({
+                size: data.length,
+                data
+            })
+        })
+}
+
 exports.list = (req,res) => {
     let limit = req.body.limit ? parseInt(req.body.limit) : 10
     let offset = req.body.offset ? parseInt(req.body.offset) : 0
