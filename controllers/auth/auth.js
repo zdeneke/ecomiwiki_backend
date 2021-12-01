@@ -165,18 +165,14 @@ exports.resetPassword = (req, res) => {
     }
 };
 
-exports.requireSignin = (req,res) => {
-    if(req && req.headers && req.headers.authorization && req.headers.authorization.split('Bearer')[1] === ' undefined'){
-        return null
-    }
-    expressJwt({
-        secret: process.env.JWT_SECRET,
-        algorithms: ["HS256"],
-        userProperty: "user",
-    });
-}
+exports.requireSignin =  expressJwt({
+    secret: process.env.JWT_SECRET,
+    algorithms: ["HS256"],
+    userProperty: "user",
+});
 
 exports.authMiddleware = (req,res,next) => {
+    if(!(req && req.user)) return null
     const authUserId = req.user._id  
     User.findById({ _id: authUserId })
         .exec((err, user) => {
