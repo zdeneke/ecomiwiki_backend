@@ -11,7 +11,6 @@ exports.getOmiPrice = () => {
     })
         .then(response => response.json())
         .then(data => {
-
             omiPrice.findOneAndUpdate(
                 {'_id': '6099a4a88ccea450904c7771'},
                 {

@@ -14,7 +14,6 @@ const { getPercentageChangeNumberOnly } = require('../../helpers/index')
 
 exports.getMarketPriceHistoricData = (req,res) => {
     const slug = req.params.slug
-
     MarketPriceHistoric.aggregate([
         {
             "$match": {
@@ -264,6 +263,7 @@ exports.getMarketPlaceDataBySearchMyCollectibles = (req,res) => {
 }
 
 exports.getMarketplaceData = (req,res) => {
+    console.log(req, res, 'wtf')
     let limit = req.body.limit ? parseInt(req.body.limit) : 15
     let offset = req.body.offset ? parseInt(req.body.offset) : 0
 
