@@ -71,7 +71,6 @@ exports.signout = (req,res) => {
 
 exports.forgotPassword = (req, res) => {
     const { email } = req.body;
-
     User.findOne({email}, (err, user) => {
         if (err || !user){
             return res.status(400).json({
@@ -80,19 +79,20 @@ exports.forgotPassword = (req, res) => {
         }
 
         const token = jwt.sign({ _id: user._id, name: user.name}, process.env.JWT_RESET_PASSWORD, {expiresIn: '10m'});
-
-        const emailData = {
-            from: process.env.EMAIL_FROM,
-            to: email,
-            subject: 'Password reset',
-            html: `
-                <h1>Please use the following link to reset your password.</h1>
-                <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
-                <hr />
-                <p>This email may contain sensitive information.</p>
-                <p>${process.env.CLIENT_URL}</p>
-            `
-        };
+        
+        // TODO: Use with send email func
+        // const emailData = {
+        //     from: process.env.EMAIL_FROM,
+        //     to: email,
+        //     subject: 'Password reset',
+        //     html: `
+        //         <h1>Please use the following link to reset your password.</h1>
+        //         <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
+        //         <hr />
+        //         <p>This email may contain sensitive information.</p>
+        //         <p>${process.env.CLIENT_URL}</p>
+        //     `
+        // };
 
         return user.updateOne({ resetPasswordLink: token }, (err, success) => {
             if (err){
@@ -102,11 +102,11 @@ exports.forgotPassword = (req, res) => {
                 })
             } else {
                 // TODO: Sign up and setup sendgrid
-                console.log(`Email sent to ${email}.`);
-                console.log(`Reset link is:  ${process.env.CLIENT_URL}/auth/password/reset/${token}`);
-                return res.json({
-                    message: `Email has been sent to ${email}`
-                })
+                // console.log(`Email sent to ${email}.`);
+                // console.log(`Reset link is:  ${process.env.CLIENT_URL}/auth/password/reset/${token}`);
+                // return res.json({
+                //     message: `Email has been sent to ${email}`
+                // })
                 // sgMail
                 //     .send(emailData)
                 //     .then(sent => {
@@ -128,7 +128,6 @@ exports.forgotPassword = (req, res) => {
 
 exports.resetPassword = (req, res) => {
     const { resetPasswordLink, newPassword } = req.body;
-
     if (resetPasswordLink){
         jwt.verify(resetPasswordLink, process.env.JWT_RESET_PASSWORD, (err, decodedData) => {
             if (err){
@@ -166,14 +165,19 @@ exports.resetPassword = (req, res) => {
     }
 };
 
-exports.requireSignin = expressJwt({
-    secret: process.env.JWT_SECRET,
-    algorithms: ["HS256"],
-    userProperty: "user",
-})
+exports.requireSignin = (req,res) => {
+    if(req && req.headers && req.headers.authorization && req.headers.authorization.split('Bearer')[1] === ' undefined'){
+        return null
+    }
+    expressJwt({
+        secret: process.env.JWT_SECRET,
+        algorithms: ["HS256"],
+        userProperty: "user",
+    });
+}
 
 exports.authMiddleware = (req,res,next) => {
-    const authUserId = req.user._id
+    const authUserId = req.user._id  
     User.findById({ _id: authUserId })
         .exec((err, user) => {
             if (err || !user){
@@ -183,7 +187,6 @@ exports.authMiddleware = (req,res,next) => {
             }
             req.profile = user
             next()
-
         })
 }
 
