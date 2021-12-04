@@ -47,6 +47,10 @@ const userSchema = new mongoose.Schema({
         type: Array,
         default: []
     },
+    userComics: {
+        type: Array,
+        default: []
+    },
     valuation: {
         type: Number
     },

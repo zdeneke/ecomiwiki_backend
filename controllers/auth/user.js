@@ -29,6 +29,28 @@ exports.updateMyCollection = (req,res) => {
     )
 }
 
+exports.updateMyComics = (req,res) => {
+    const userId = req.params.slug
+    User.findByIdAndUpdate(
+        {_id: userId},
+        {$set: {
+                'userComics': req.body
+            }},
+        {new: true},
+        (err, user) => {
+            if (err){
+                console.log('Error is: ', err)
+                return res.status(400).json({
+                    error: 'Something went adding the comics.'
+                })
+            }
+            user.hashed_password = undefined;
+            user.salt = undefined;
+            res.json(user)
+        }
+    )
+}
+
 // Update user valuation
 exports.updateValuation = (req,res) => {
     User.findByIdAndUpdate(
@@ -61,6 +83,22 @@ exports.getUserCollectibles = (req,res) => {
             }
             res.json({
                 "collectibles": data.userCollection
+            })
+        })
+}
+
+// Get user comics
+exports.getUserComics = (req,res) => {
+    const userId = req.params.slug
+    User.findById({_id: userId})
+        .exec((err, data) => {
+            if (err){
+                return res.status(400).json({
+                    error: 'Unable to fetch users comics.'
+                })
+            }
+            res.json({
+                "comics": data.userComics
             })
         })
 }

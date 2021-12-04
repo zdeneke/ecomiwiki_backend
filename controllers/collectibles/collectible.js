@@ -251,7 +251,7 @@ exports.listBySearch = (req, res) => {
             if (err) {
                 return res.status(400).json({
                     error: "Products not found"
-                });
+                })
             }
             res.json({
                 size: data.length,

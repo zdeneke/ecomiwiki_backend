@@ -214,6 +214,45 @@ exports.getLatestComics = (req,res) => {
     })
 }
 
+
+//             $or: [
+//                 {title: {$regex: search, $options: 'i'}},
+//                 {body: {$regex: search, $options: 'i'}}
+//             ]
+
+exports.listBySearch = (req,res) => {
+    let order = req.body.order ? req.body.order : "desc";
+    let sortBy = req.body.sortBy ? req.body.sortBy : "_id";
+    let limit = req.body.limit ? parseInt(req.body.limit) : 15
+    let offset = req.body.offset ? parseInt(req.body.offset) : 0
+    let findArgs = {}
+
+    if (req.body.filters.name && req.body.filters.name.length > 0){
+        findArgs = {
+            "$or": [
+                { "title": { '$regex': req.body.filters.name, '$options': 'i' } },
+            ]
+        }
+    }
+
+    // Dont use comic use the marketprice/comic thing - look at github.
+    Comic.find(findArgs)
+        .sort([[sortBy, order]])
+        .skip(offset)
+        .limit(limit)
+        .exec((err, data) => {
+            if (err) {
+                return res.status(400).json({
+                    error: "Comics not found"
+                });
+            }
+            res.json({
+                size: data.length,
+                data
+            });
+        });
+};
+
 // exports.photo = (req,res) => {
 //     const slug = req.params.slug.toLowerCase()
 //
