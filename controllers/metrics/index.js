@@ -90,7 +90,37 @@ exports.getMarketPriceHistoricData48 = (req,res) => {
 exports.getAllMarketPriceHistoricData = (req,res) => {
     const slug = req.params.slug
 
-    MarketPriceHistoric.find({ collectibleId: slug}).exec((err, data) => {
+    // MarketPriceHistoric.find({ collectibleId: slug}).exec((err, data) => {
+    //     if (err){
+    //         return res.status(400).json({
+    //             error: errorHandler(err)
+    //         })
+    //     }
+    //     res.json(data)
+    // })
+
+    console.log('Got it:')
+
+    MarketPriceHistoric.aggregate([
+        {$match: { collectibleId: slug } },
+        {
+            $addFields: {
+                history: {
+                    $map: {
+                        input: "$history",
+                        in: {
+                            "$mergeObjects": [
+                                "$$this",
+                                {
+                                    prevSold: "$$this.prevSold.price"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    ]).exec((err, data) => {
         if (err){
             return res.status(400).json({
                 error: errorHandler(err)
