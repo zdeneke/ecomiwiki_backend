@@ -138,7 +138,6 @@ exports.read = (req,res) => {
         })
 }
 
-
 exports.getCollectibleBySlug = (req,res) => {
     const slug = req.params.slug.toLowerCase()
 
@@ -280,7 +279,6 @@ exports.getLatestCollectibles = (req,res) => {
             })
         })
 }
-
 
 // exports.photo = (req,res) => {
 //     const slug = req.params.slug.toLowerCase()

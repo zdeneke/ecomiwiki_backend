@@ -17,6 +17,7 @@ const licenseRoutes = require('./routes/license/license')
 const brandRoutes = require('./routes/brand/brand') 
 const metricRoutes = require('./routes/metrics/index')
 const seriesRoutes = require('./routes/series/series')
+const prizeRoutes = require('./routes/community/veveartshow')
 
 // App
 const app = express()
@@ -67,6 +68,9 @@ app.use('/api', licenseRoutes)
 app.use('/api', brandRoutes)
 app.use('/api', metricRoutes)
 app.use('/api', seriesRoutes)
+
+// VEVE Art Show
+app.use('/api', prizeRoutes)
 
 // Port
 const port = process.env.PORT || 8000
