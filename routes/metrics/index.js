@@ -105,7 +105,7 @@ router.get('/metrics/marketplace/collectible/history/:slug', requireSignin, auth
 router.get('/metrics/marketplace/collectible/history/48/:slug', cache('61 minutes'), getMarketPriceHistoricData48)
 
 // Get secondary market collectible data (all)
-router.get('/metrics/marketplace/collectible/history/:slug/all', requireSignin, authMiddleware, cache('61 minutes'), getAllMarketPriceHistoricData)
+router.get('/metrics/marketplace/collectible/history/:slug/alll', requireSignin, authMiddleware, cache('61 minutes'), getAllMarketPriceHistoricData)
 
 // Get secondary marketplace data for comics
 router.get('/metrics/marketplace/comics', requireSignin, authMiddleware, cache('61 minutes'), getMarketplaceComicData)

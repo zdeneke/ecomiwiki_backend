@@ -99,8 +99,6 @@ exports.getAllMarketPriceHistoricData = (req,res) => {
     //     res.json(data)
     // })
 
-    console.log('Got it:')
-
     MarketPriceHistoric.aggregate([
         {$match: { collectibleId: slug } },
         {

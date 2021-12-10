@@ -12,6 +12,9 @@ const MarketComicPriceHistoric = new mongoose.Schema({
             issueNumber: {
                 type: Number
             },
+            marketCap: {
+                type: Number
+            },
             totalListings: {
                 type: Number
             },

@@ -21,6 +21,9 @@ const MarketPriceHistoric = new mongoose.Schema({
             date: {
                 type: Date
             },
+            marketCap: {
+                type: Number
+            },
             hourlyChange: {
                 "market": {
                     type: Number
