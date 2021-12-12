@@ -52,7 +52,26 @@ const userSchema = new mongoose.Schema({
         default: []
     },
     valuation: {
-        type: Number
+        totalValuation: {
+            type: Number,
+            default: 0
+        },
+        comicsValuation: {
+            type: Number,
+            default: 0
+        },
+        collectiblesValuation: {
+            type: Number,
+            default: 0
+        },
+        omiValuation: {
+            type: Number,
+            default: 0
+        }
+    },
+    history: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'UserValuationHistory'
     },
 }, { timestamps: true })
 

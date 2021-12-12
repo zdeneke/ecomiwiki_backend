@@ -7,7 +7,8 @@ const {
     updateValuation,
     getUserCollectibles,
     updateMyComics,
-    getUserComics
+    getUserComics,
+    updateMyValuation
 } = require('../../controllers/auth/user')
 
 // User profile
@@ -26,6 +27,6 @@ router.get('/user/collection/:slug', requireSignin, getUserCollectibles)
 router.get('/user/comics/:slug', requireSignin, getUserComics)
 
 // Set valuation
-router.put('/user/valuation', requireSignin, updateValuation)
+router.put('/user/valuation/:slug', requireSignin, updateValuation)
 
 module.exports = router

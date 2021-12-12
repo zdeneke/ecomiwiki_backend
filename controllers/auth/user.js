@@ -53,9 +53,22 @@ exports.updateMyComics = (req,res) => {
 
 // Update user valuation
 exports.updateValuation = (req,res) => {
+    const userId = req.params.slug
+    const { totalValuation, comicsValuation, collectiblesValuation, omiValuation } = req.body
+    console.log('Total valuation is: ', totalValuation)
+    console.log('Comics valuation is: ', comicsValuation)
+    console.log('Collectibles valuation is: ', collectiblesValuation)
+    console.log('OMI valuation is: ', omiValuation)
     User.findByIdAndUpdate(
-        {_id: req.profile._id},
-        {$set: req.body},
+        {_id: userId},
+        {$set: {
+                'valuation': {
+                    totalValuation,
+                    comicsValuation,
+                    collectiblesValuation,
+                    omiValuation
+                }
+            }},
         { new: true },
         (err, user) => {
             if (err){
