@@ -140,7 +140,7 @@ router.post('/metrics/account/comics/valuation', requireSignin, authMiddleware, 
 
 
 // Update all collectible and comic's marketCap prices
-router.get('/internal/admin/nevershare/marketplace/updatecollectiblesmax', updateAllMarketCollectiblePriceHistory)
+router.get('/internal/admin/nevershare/metrics/marketplace/updatecollectiblesmax', updateAllMarketCollectiblePriceHistory)
 router.get('/internal/admin/nevershare/metrics/marketplace/updatecomicsmax', updateAllMarketComicPriceHistory)
 
 

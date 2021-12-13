@@ -140,7 +140,7 @@ exports.updateAllMarketComicPriceHistory = async function(){
     let noValueRecords = 0
     let noListingsRecords = 0
     let overallUnchanged = 0
-    const results = await MarketComicPriceHistoric.find(5).exec()
+    const results = await MarketComicPriceHistoric.find().limit().exec()
     if(results){
         results.map((v,i) => {
             if(!v.history) return null
@@ -170,7 +170,7 @@ exports.updateAllMarketComicPriceHistory = async function(){
             // PLEASE ONLY UNCOMMENT AND HIT THIS ENDPOINT WITH A LIMIT IF YOU'RE TESTING - AND DO SO LOCALLY.
             // ####################### 
 
-            // await MarketComicPriceHistoric.findOneAndUpdate(
+            // MarketComicPriceHistoric.findOneAndUpdate(
             //     {'_id': v._id},
             // {
             //    $set: {
@@ -209,7 +209,7 @@ exports.updateAllMarketCollectiblePriceHistory = async function(){
     let noValueRecords = 0
     let noListingsRecords = 0
     let overallUnchanged = 0
-    const results = await MarketPriceHistoric.find().limit(5).exec()
+    const results = await MarketPriceHistoric.find().limit(1).exec()
     if(results){
         results.map((v,i) => {
             if(!v.history) return null
@@ -239,7 +239,7 @@ exports.updateAllMarketCollectiblePriceHistory = async function(){
             // PLEASE ONLY UNCOMMENT AND HIT THIS ENDPOINT WITH A LIMIT IF YOU'RE TESTING - AND DO SO LOCALLY.
             // #######################
 
-            // await MarketPriceHistoric.findOneAndUpdate(
+            // MarketPriceHistoric.findOneAndUpdate(
             //     {'_id': v._id},
             // {
             //    $set: {
