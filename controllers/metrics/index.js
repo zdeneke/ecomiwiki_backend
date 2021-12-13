@@ -142,7 +142,46 @@ exports.getAllMarketComicPriceHistoricData = (req,res) => {
 
 }
 
-// TODO: Implement fetch by biggers losers
+exports.getMarketPlaceComicDataByLosers = (req,res) => {
+    let limit = req.body.limit ? parseInt(req.body.limit) : 15
+    let offset = req.body.offset ? parseInt(req.body.offset) : 0
+    ComicPrice.find( {"metrics.one_day_change":{ "$exists": true }} )
+        .sort({ "metrics.one_day_change": 1 })
+        .skip(offset)
+        .limit(limit)
+        .exec((err, data) => {
+            if (err){
+                return res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            res.json({
+                size: data.length,
+                data
+            })
+        })
+}
+
+exports.getMarketPlaceComicDataByGainers = (req,res) => {
+    let limit = req.body.limit ? parseInt(req.body.limit) : 15
+    let offset = req.body.offset ? parseInt(req.body.offset) : 0
+    ComicPrice.find( {"metrics.one_day_change":{ "$exists": true }} )
+        .sort({ "metrics.one_day_change": -1 })
+        .skip(offset)
+        .limit(limit)
+        .exec((err, data) => {
+            if (err){
+                return res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            res.json({
+                size: data.length,
+                data
+            })
+        })
+}
+
 exports.getMarketPlaceDataByLosers = (req,res) => {
     let limit = req.body.limit ? parseInt(req.body.limit) : 15
     let offset = req.body.offset ? parseInt(req.body.offset) : 0
@@ -237,7 +276,6 @@ exports.getMarketPlaceDataBySearch = (req,res) => {
         .limit(limit)
         .exec((err, data) => {
             if (err) {
-                console.log('Error is: ', err)
                 return res.status(400).json({
                     error: "Collectibles not found"
                 });
@@ -248,6 +286,47 @@ exports.getMarketPlaceDataBySearch = (req,res) => {
             });
         });
     }
+
+exports.getMarketPlaceDataBySearchMyComics = (req,res) => {
+    let ids = req.body.ids ? req.body.ids : null
+    let order = req.body.order ? req.body.order : "desc"
+    let sortBy = req.body.sortBy ? req.body.sortBy : "_id"
+    let limit = req.body.limit ? parseInt(req.body.limit) : 15
+    let offset = req.body.offset ? parseInt(req.body.offset) : 0
+    let findArgs = {}
+    if (req.body.filters.name && req.body.filters.name.length > 0){
+        findArgs = {
+            "$or": [
+                { "name": { '$regex': req.body.filters.name, '$options': 'i' } },
+                { "brand.name": { '$regex': req.body.filters.name, '$options': 'i' } },
+                { "uniqueCoverId" : {"$in": ids } }
+            ]
+        }
+    } else {
+        findArgs = {
+            "$or": [
+                { "uniqueCoverId" : {"$in": ids } }
+            ]
+        }
+    }
+
+    ComicPrice.find(findArgs)
+        .sort([[sortBy, order]])
+        .skip(offset)
+        .limit(limit)
+        .exec((err, data) => {
+            if (err) {
+                console.log('Error is: ', err)
+                return res.status(400).json({
+                    error: "Collectibles not found"
+                });
+            }
+            res.json({
+                size: data.length,
+                data
+            });
+        });
+}
 
 exports.getMarketPlaceDataBySearchMyCollectibles = (req,res) => {
     let ids = req.body.ids ? req.body.ids : null

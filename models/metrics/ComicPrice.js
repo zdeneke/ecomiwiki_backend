@@ -56,6 +56,9 @@ const ComicPrice = new mongoose.Schema({
         lowestPrice: {
             type: Number
         },
+        one_day_change: {
+            type: Number
+        },
         totalListings: {
             type: Number
         },

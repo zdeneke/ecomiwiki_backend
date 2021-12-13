@@ -31,8 +31,11 @@ const {
     getAllMarketComicPriceHistoricData,
     getMarketPlaceDataByLosers,
     getMarketPlaceDataByGainers,
+    getMarketPlaceComicDataByLosers,
+    getMarketPlaceComicDataByGainers,
     getSingleMarketCollectibleStatistics,
-    getMarketPriceHistoricData48
+    getMarketPriceHistoricData48,
+    getMarketPlaceDataBySearchMyComics
 } = require('../../controllers/metrics/index')
 
 // Init cache
@@ -80,11 +83,20 @@ router.post('/metrics/marketplace/collectibles/search', requireSignin, authMiddl
 // Search secondary marketplace data for users collectibles
 router.post('/metrics/marketplace/my-collectibles/search', requireSignin, authMiddleware, getMarketPlaceDataBySearchMyCollectibles)
 
-// Biggest losers in the marketplace
+// Search secondary marketplace data for users comics
+router.post('/metrics/marketplace/my-comics/search', requireSignin, authMiddleware, getMarketPlaceDataBySearchMyComics)
+
+// Biggest losers in the marketplace (collectibles)
 router.post('/metrics/marketplace/collectibles/losers', requireSignin, authMiddleware, getMarketPlaceDataByLosers)
 
-// Biggest gainers in the marketplace
+// Biggest gainers in the marketplace (collectibles)
 router.post('/metrics/marketplace/collectibles/gainers', requireSignin, authMiddleware, getMarketPlaceDataByGainers)
+
+// Biggest losers in the marketplace (comics)
+router.post('/metrics/marketplace/comics/losers', getMarketPlaceComicDataByLosers)
+
+// Biggest gainers in the marketplace (comics
+router.post('/metrics/marketplace/comics/gainers', getMarketPlaceComicDataByGainers)
 
 // Get secondary marketplace data for single (collectible)
 router.get('/metrics/marketplace/collectible/:slug', requireSignin, authMiddleware, cache('61 minutes'), getSingleMarketCollectibleData)
