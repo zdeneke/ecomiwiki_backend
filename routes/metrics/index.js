@@ -87,16 +87,16 @@ router.post('/metrics/marketplace/my-collectibles/search', requireSignin, authMi
 router.post('/metrics/marketplace/my-comics/search', requireSignin, authMiddleware, getMarketPlaceDataBySearchMyComics)
 
 // Biggest losers in the marketplace (collectibles)
-router.post('/metrics/marketplace/collectibles/losers', requireSignin, authMiddleware, cache('61 minutes'),getMarketPlaceDataByLosers)
+router.post('/metrics/marketplace/collectibles/losers', requireSignin, authMiddleware,getMarketPlaceDataByLosers)
 
 // Biggest gainers in the marketplace (collectibles)
-router.post('/metrics/marketplace/collectibles/gainers', requireSignin, authMiddleware, cache('61 minutes'), getMarketPlaceDataByGainers)
+router.post('/metrics/marketplace/collectibles/gainers', requireSignin, authMiddleware, getMarketPlaceDataByGainers)
 
 // Biggest losers in the marketplace (comics)
-router.post('/metrics/marketplace/comics/losers', requireSignin, authMiddleware, cache('61 minutes'), getMarketPlaceComicDataByLosers)
+router.post('/metrics/marketplace/comics/losers', requireSignin, authMiddleware, getMarketPlaceComicDataByLosers)
 
 // Biggest gainers in the marketplace (comics
-router.post('/metrics/marketplace/comics/gainers', requireSignin, authMiddleware, cache('61 minutes'), getMarketPlaceComicDataByGainers)
+router.post('/metrics/marketplace/comics/gainers', requireSignin, authMiddleware, getMarketPlaceComicDataByGainers)
 
 // Get secondary marketplace data for single (collectible)
 router.get('/metrics/marketplace/collectible/:slug', requireSignin, authMiddleware, cache('61 minutes'), getSingleMarketCollectibleData)
