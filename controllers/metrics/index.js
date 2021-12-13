@@ -140,7 +140,7 @@ exports.updateAllMarketComicPriceHistory = async function(){
     let noValueRecords = 0
     let noListingsRecords = 0
     let overallUnchanged = 0
-    const results = await MarketComicPriceHistoric.find().limit().exec()
+    const results = await MarketComicPriceHistoric.find().exec()
     if(results){
         results.map((v,i) => {
             if(!v.history) return null
@@ -209,7 +209,7 @@ exports.updateAllMarketCollectiblePriceHistory = async function(){
     let noValueRecords = 0
     let noListingsRecords = 0
     let overallUnchanged = 0
-    const results = await MarketPriceHistoric.find().limit(1).exec()
+    const results = await MarketPriceHistoric.find().exec()
     if(results){
         results.map((v,i) => {
             if(!v.history) return null
