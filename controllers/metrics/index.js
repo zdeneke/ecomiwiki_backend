@@ -90,15 +90,6 @@ exports.getMarketPriceHistoricData48 = (req,res) => {
 exports.getAllMarketPriceHistoricData = (req,res) => {
     const slug = req.params.slug
 
-    // MarketPriceHistoric.find({ collectibleId: slug}).exec((err, data) => {
-    //     if (err){
-    //         return res.status(400).json({
-    //             error: errorHandler(err)
-    //         })
-    //     }
-    //     res.json(data)
-    // })
-
     MarketPriceHistoric.aggregate([
         {$match: { collectibleId: slug } },
         {
@@ -130,7 +121,6 @@ exports.getAllMarketPriceHistoricData = (req,res) => {
 
 exports.getAllMarketComicPriceHistoricData = (req,res) => {
     const slug = req.params.slug
-
     MarketComicPriceHistoric.find({ uniqueCoverId: slug}).exec((err, data) => {
         if (err){
             return res.status(400).json({
@@ -139,8 +129,145 @@ exports.getAllMarketComicPriceHistoricData = (req,res) => {
         }
         res.json(data)
     })
-
 }
+
+exports.updateAllMarketComicPriceHistory = async function(){
+    console.log('\n\n ----------------Running marketCap insertion for Comics ----------------\n')
+    console.log('\n\n Please wait while the script runs.... AVG: 3s per record W/O INSERT....\n')
+    console.time('updating comics')
+    let singularEntries = 0
+    let overallRows = 0
+    let noValueRecords = 0
+    let noListingsRecords = 0
+    let overallUnchanged = 0
+    const results = await MarketComicPriceHistoric.find(5).exec()
+    if(results){
+        results.map((v,i) => {
+            if(!v.history) return null
+            let realHistory = []
+            v.history.map((vi,ii) => {
+                if(!vi.marketCap){
+                    singularEntries++;
+                    let realListings = vi.totalListings
+                    if(!vi.value){
+                        noValueRecords++;
+                        return;
+                    }
+                    if(!vi.totalListings || vi.totalListings === 0){
+                        realListings = 1
+                        noListingsRecords++;
+                    }
+                    vi.marketCap = vi.value * realListings
+                    realHistory.push(vi)
+                }else{
+                    overallUnchanged++;
+                    realHistory.push(vi)
+                }
+            })
+
+            // ############ UNCOMMENT AT YOUR OWN RISK ########### 
+            // ####################### 
+            // PLEASE ONLY UNCOMMENT AND HIT THIS ENDPOINT WITH A LIMIT IF YOU'RE TESTING - AND DO SO LOCALLY.
+            // ####################### 
+
+            // await MarketComicPriceHistoric.findOneAndUpdate(
+            //     {'_id': v._id},
+            // {
+            //    $set: {
+            //         'history': realHistory
+            //     }
+            // },
+            //     { new: false, upsert: false }
+            // ).exec((err,doc) => {
+            //     if(err){
+            //         console.log('\n\n ERROR UPDATING COMICS ---', err)
+            //         return;
+            //     }
+            //     console.log('\n\n SUCCESS UPDATING COMICS ----')
+            // })
+
+            overallRows++;
+        })
+
+        console.log('\n\n\n -------INSIDE UPDATE COMICS ---- \n')
+        console.timeEnd('updating comics')
+        console.log('overall rows checked', overallRows)
+        console.log('singular entries updated', singularEntries)
+        console.log('singular entries NOT updated', overallUnchanged)
+        console.log('no value records', noValueRecords)
+        console.log('no listings records', noListingsRecords)
+        console.log('\n\n')
+    }
+}
+
+exports.updateAllMarketCollectiblePriceHistory = async function(){
+    console.log('\n\n ----------------Running marketCap insertion for Collectibles ----------------\n')
+    console.log('\n\n Please wait while the script runs.... AVG: 3s per record  W/O INSERT....\n')
+    console.time('updating collectibles')
+    let singularEntries = 0
+    let overallRows = 0
+    let noValueRecords = 0
+    let noListingsRecords = 0
+    let overallUnchanged = 0
+    const results = await MarketPriceHistoric.find().limit(5).exec()
+    if(results){
+        results.map((v,i) => {
+            if(!v.history) return null
+            let realHistory = []
+            v.history.map((vi,ii) => {
+                if(!vi.marketCap){
+                    singularEntries++;
+                    let realListings = vi.totalListings
+                    if(!vi.value){
+                        noValueRecords++;
+                        return;
+                    }
+                    if(!vi.totalListings || vi.totalListings === 0){
+                        realListings = 1
+                        noListingsRecords++;
+                    }
+                    vi.marketCap = vi.value * realListings
+                    realHistory.push(vi)
+                }else{
+                    overallUnchanged++;
+                    realHistory.push(vi)
+                }
+            })
+
+            // ############ UNCOMMENT AT YOUR OWN RISK ###########
+            // #######################
+            // PLEASE ONLY UNCOMMENT AND HIT THIS ENDPOINT WITH A LIMIT IF YOU'RE TESTING - AND DO SO LOCALLY.
+            // #######################
+
+            // await MarketPriceHistoric.findOneAndUpdate(
+            //     {'_id': v._id},
+            // {
+            //    $set: {
+            //         'history': realHistory
+            //     }
+            // },
+            //     { new: false, upsert: false },
+            // ).exec((err,doc) => {
+            //     if(err){
+            //         console.log('\n\n ERROR UPDATING COLLECTIBLES ---', err)
+            //         return;
+            //     }
+            //     console.log('\n\n SUCCESS UPDATING COLLECTIBLES ----')
+            // })
+
+            overallRows++;
+        })
+        console.log('\n\n\n -------INSIDE UPDATE COLLECTIBLES ---- \n')
+        console.timeEnd('updating collectibles')
+        console.log('overall rows checked', overallRows)
+        console.log('singular entries updated', singularEntries)
+        console.log('singular entries NOT updated', overallUnchanged)
+        console.log('no value records', noValueRecords)
+        console.log('no listings records', noListingsRecords)
+        console.log('\n\n')
+    }
+}
+
 
 exports.getMarketPlaceComicDataByLosers = (req,res) => {
     let limit = req.body.limit ? parseInt(req.body.limit) : 15
@@ -466,7 +593,6 @@ exports.getCollectibleChangeSummary = (req,res) => {
 
 exports.getMarketplaceComicData = (req,res) => {
     ComicPrice.find()
-        // .populate('ComicPriceHistoric', 'lowestPrice')
         .exec((err, data) => {
             if (err){
                 return res.status(400).json({
@@ -513,15 +639,6 @@ exports.getMarketPriceComicHistoricData = (req,res) => {
         }
         res.json(data)
     })
-
-    // MarketComicPriceHistoric.findOne({ uniqueCoverId: slug }).exec((err, data) => {
-    //     if (err){
-    //         return res.status(400).json({
-    //             error: errorHandler(err)
-    //         })
-    //     }
-    //     res.json(data)
-    // })
 }
 
 exports.getOmiMetrics = (req,res) => {

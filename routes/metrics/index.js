@@ -35,7 +35,9 @@ const {
     getMarketPlaceComicDataByGainers,
     getSingleMarketCollectibleStatistics,
     getMarketPriceHistoricData48,
-    getMarketPlaceDataBySearchMyComics
+    getMarketPlaceDataBySearchMyComics,
+    updateAllMarketCollectiblePriceHistory,
+    updateAllMarketComicPriceHistory,
 } = require('../../controllers/metrics/index')
 
 // Init cache
@@ -134,5 +136,12 @@ router.post('/metrics/account/collectibles/valuation', requireSignin, authMiddle
 
 // Get comics valuation
 router.post('/metrics/account/comics/valuation', requireSignin, authMiddleware, getComicsValuation)
+
+
+
+// Update all collectible and comic's marketCap prices
+router.get('/internal/admin/nevershare/marketplace/updatecollectiblesmax', updateAllMarketCollectiblePriceHistory)
+router.get('/internal/admin/nevershare/metrics/marketplace/updatecomicsmax', updateAllMarketComicPriceHistory)
+
 
 module.exports = router

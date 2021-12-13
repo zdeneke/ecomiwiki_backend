@@ -1,11 +1,10 @@
 const mongoose = require('mongoose')
 
-
 const MarketComicPriceHistoric = new mongoose.Schema({
         uniqueCoverId: {
             type: String,
         },
-        prices: [{
+        history: [{
             storePrice: {
                 type: Number
             },
