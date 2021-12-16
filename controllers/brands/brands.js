@@ -29,7 +29,7 @@ exports.read = (req,res) => {
                     error: errorHandler(err)
                 })
             }
-            Collectible.find({brand: brand})
+            Collectible.find({"brand.id": brand._id})
                 .populate('brand', '_id name slug')
                 .exec((err, data) => {
                     if (err){
