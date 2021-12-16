@@ -117,3 +117,19 @@ exports.getLatestBrands = (req,res) => {
             })
         })
 }
+
+exports.listAllBrands = (req,res) => {
+    console.log('hit')
+    Brand.find({})
+        .exec((err, data) => {
+            if (err){
+                return res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            res.json({
+                size: data.length,
+                data
+            })
+        })
+}

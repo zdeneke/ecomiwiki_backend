@@ -1,6 +1,14 @@
 const express = require('express')
 const router = express.Router()
-const { create, list, read, remove, getBrandPhoto, getLatestBrands } = require('../../controllers/brands/brands')
+const {
+    create,
+    list,
+    read,
+    remove,
+    getBrandPhoto,
+    getLatestBrands,
+    listAllBrands
+} = require('../../controllers/brands/brands')
 const { requireSignin, adminMiddleware } = require('../../controllers/auth/auth')
 
 // Validators
@@ -24,5 +32,8 @@ router.get('/brand/photo/:slug', getBrandPhoto)
 
 // Get Latest Brand
 router.post("/brands/latest", getLatestBrands)
+
+// List all brands
+router.get('/seo/brands', listAllBrands)
 
 module.exports = router
