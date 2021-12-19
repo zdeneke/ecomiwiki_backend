@@ -4,6 +4,10 @@ const ComicPrice = new mongoose.Schema({
     uniqueCoverId: {
         type: String
     },
+    slug: {
+        type: String,
+        unique: true
+    },
     comicId: {
         type: String,
     },

@@ -10,7 +10,8 @@ const {
     listRelated,
     listSearch,
     getLatestComics,
-    listBySearch
+    listBySearch,
+    getSingleComicSeo
 } = require('../../controllers/comics/comic')
 const { requireSignin, adminMiddleware } = require('../../controllers/auth/auth')
 
@@ -19,6 +20,7 @@ let cache = apicache.middleware
 // router.post('/comic', requireSignin, adminMiddleware, create)
 router.post('/comics', cache('61 minutes'), list)
 router.get('/comic/:slug', cache('61 minutes'), read)
+router.get('/comic/seo/:slug', cache('61 minutes'), getSingleComicSeo)
 router.delete('/comic/:slug', requireSignin, adminMiddleware, remove)
 router.put('/comic/:slug', requireSignin, adminMiddleware, update)
 router.post('/comic/latest', getLatestComics)

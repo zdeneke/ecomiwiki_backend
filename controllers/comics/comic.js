@@ -117,7 +117,21 @@ exports.read = (req,res) => {
                     error: errorHandler(err)
                 })
             }
-            console.log('Comic data is: ', data)
+            res.json(data)
+        })
+}
+
+exports.getSingleComicSeo = (req,res) => {
+    const slug = req.params.slug.toLowerCase()
+
+    ComicPrice.findOne({ slug: slug })
+        .exec((err, data) => {
+            if (err){
+                return res.status(400).json({
+                    error: errorHandler(err)
+                })
+            }
+            console.log('data is: ', data)
             res.json(data)
         })
 }
