@@ -131,7 +131,6 @@ exports.getSingleComicSeo = (req,res) => {
                     error: errorHandler(err)
                 })
             }
-            console.log('data is: ', data)
             res.json(data)
         })
 }
