@@ -211,7 +211,7 @@ exports.getLatestComics = (req,res) => {
     let limit = req.body.limit ? parseInt(req.body.limit) : 10
     let offset = req.body.offset ? parseInt(req.body.offset) : 0
 
-    Comic.find({})
+    ComicPrice.find({})
         .sort({ createdAt: -1 })
         .skip(offset)
         .limit(limit)

@@ -9,6 +9,6 @@ const { collectibleSerieslist, comicSerieslist } = require('../../controllers/se
 
 router.get('/collectible/seriesx/:slug', cache('1 day'), collectibleSerieslist)
 
-router.get('/comic/series/:slug', cache('1 day'), comicSerieslist)
+router.get('/comic/seriesy/:slug', cache('1 day'), comicSerieslist)
 
 module.exports = router

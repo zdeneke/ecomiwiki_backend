@@ -35,6 +35,7 @@ const {
     getMarketPlaceComicDataByGainers,
     getSingleMarketCollectibleStatistics,
     getMarketPriceHistoricData48,
+    getMarketPriceHistoricComicData48,
     getMarketPlaceDataBySearchMyComics
 } = require('../../controllers/metrics/index')
 
@@ -115,6 +116,10 @@ router.get('/metrics/marketplace/collectible/history/:slug', requireSignin, auth
 
 // Get secondary market collectible data (48 hours)
 router.get('/metrics/marketplace/collectible/history/48/:slug', cache('61 minutes'), getMarketPriceHistoricData48)
+
+// Get secondary market comic data (48 hours)
+router.get('/metrics/marketplace/comic/history/48/:slug', cache('61 minutes'), getMarketPriceHistoricComicData48)
+
 
 // Get secondary market collectible data (all)
 router.get('/metrics/marketplace/collectible/history/:slug/all', requireSignin, authMiddleware, cache('61 minutes'), getAllMarketPriceHistoricData)

@@ -23,7 +23,7 @@ exports.comicSerieslist = (req,res) => {
 
     ComicPrice.find({ 'comicSeries.id': seriesId })
         .sort({ dropDate: -1 })
-        .select('comicSeries.name name comicNumber totalIssued totalAvailable cover.rarity cover.image.thumbnailUrl cover.image.name dropDate metrics')
+        .select('comicSeries.name name slug storePrice comicNumber totalIssued totalAvailable cover.rarity cover.image.thumbnailUrl cover.image.lowResolutionUrl cover.image.name dropDate metrics')
         .exec((err, data) => {
             if (err){
                 return res.status(400).json({
